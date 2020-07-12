@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Authors>Ac682</Authors>
+    <Company>Unicore</Company>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/ac682/Ac682.Hyperai.Plugins.Essential</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Hyperai.Abstractions\Hyperai.Abstractions\Hyperai.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Hyperai.Units.Abstractions\Hyperai.Units.Abstractions\Hyperai.Units.Abstractions.csproj" />
+    <ProjectReference Include="..\..\HyperaiShell.Foundation\HyperaiShell.Foundation\HyperaiShell.Foundation.csproj" />
+  </ItemGroup>
+
+</Project>
