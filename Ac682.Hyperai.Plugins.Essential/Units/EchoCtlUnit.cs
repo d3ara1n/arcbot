@@ -1,9 +1,13 @@
 ﻿using Ac682.Hyperai.Plugins.Essential.Services;
 using Hyperai.Events;
+using Hyperai.Messages;
 using Hyperai.Relations;
 using Hyperai.Units;
 using Hyperai.Units.Attributes;
+using HyperaiShell.Foundation.Data;
 using HyperaiShell.Foundation.Extensions;
+using HyperaiShell.Foundation.Plugins;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Threading.Tasks;
@@ -49,6 +53,14 @@ namespace Ac682.Hyperai.Plugins.Essential.Units
         {
             _service.Off(group.Identity);
             await group.SendAsync("Echo off".MakeMessageChain());
+        }
+
+        [Receive(MessageEventType.Group)]
+        [Extract("!image")]
+        public async Task Image(Group group)
+        {
+            var builder = new MessageChainBuilder().AddImage(new Uri(@"E:\Pictures\DOAX-VenusVacation\DOAX-VenusVacation_200207_191722.jpg"));
+            await group.SendAsync(builder.Build());
         }
     }
 }
