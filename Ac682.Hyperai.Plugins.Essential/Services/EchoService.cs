@@ -1,7 +1,6 @@
 ﻿using Ac682.Hyperai.Plugins.Essential.Models;
 using HyperaiShell.Foundation.Data;
 using HyperaiShell.Foundation.Plugins;
-using System.Collections.Generic;
 
 namespace Ac682.Hyperai.Plugins.Essential.Services
 {
@@ -15,12 +14,13 @@ namespace Ac682.Hyperai.Plugins.Essential.Services
         }
         public void On(long num)
         {
-            var track = _repository.Query<EchoTrack>().Where(x => x.Target == num).FirstOrDefault();
-            if(track != null)
+            EchoTrack track = _repository.Query<EchoTrack>().Where(x => x.Target == num).FirstOrDefault();
+            if (track != null)
             {
                 track.State = true;
                 _repository.Update(track);
-            }else
+            }
+            else
             {
                 _repository.Store(new EchoTrack() { State = true, Target = num });
             }
@@ -28,7 +28,7 @@ namespace Ac682.Hyperai.Plugins.Essential.Services
 
         public void Off(long num)
         {
-            var track = _repository.Query<EchoTrack>().Where(x => x.Target == num).FirstOrDefault();
+            EchoTrack track = _repository.Query<EchoTrack>().Where(x => x.Target == num).FirstOrDefault();
             if (track != null)
             {
                 track.State = false;
@@ -40,7 +40,9 @@ namespace Ac682.Hyperai.Plugins.Essential.Services
             }
         }
 
-        public bool IsOn(long num) =>
-            _repository.Query<EchoTrack>().Where(x => x.Target == num).FirstOrDefault()?.State ?? false;
+        public bool IsOn(long num)
+        {
+            return _repository.Query<EchoTrack>().Where(x => x.Target == num).FirstOrDefault()?.State ?? false;
+        }
     }
 }

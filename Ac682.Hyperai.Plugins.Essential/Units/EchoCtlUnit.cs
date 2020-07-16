@@ -1,15 +1,10 @@
 ﻿using Ac682.Hyperai.Plugins.Essential.Services;
 using Hyperai.Events;
-using Hyperai.Messages;
 using Hyperai.Relations;
 using Hyperai.Units;
 using Hyperai.Units.Attributes;
-using HyperaiShell.Foundation.Data;
-using HyperaiShell.Foundation.Extensions;
-using HyperaiShell.Foundation.Plugins;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
+using HyperaiShell.Foundation.Authorization.Attributes;
+using HyperaiShell.Foundation.ModelExtensions;
 using System.Threading.Tasks;
 
 namespace Ac682.Hyperai.Plugins.Essential.Units
@@ -28,15 +23,16 @@ namespace Ac682.Hyperai.Plugins.Essential.Units
         public async Task EchoOn(Friend friend)
         {
             _service.On(friend.Identity);
-            await friend.SendAsync("Echo on".MakeMessageChain());
+            await friend.SendPlainAsync("你开启了回声模式。");
         }
 
         [Receive(MessageEventType.Group)]
         [Extract("!echo.on")]
+        [CheckTicket("echo.control")]
         public async Task EchoOn(Group group)
         {
             _service.On(group.Identity);
-            await group.SendAsync("Echo on".MakeMessageChain());
+            await group.SendPlainAsync("群里开启了回声模式。");
         }
 
         [Receive(MessageEventType.Friend)]
@@ -44,23 +40,16 @@ namespace Ac682.Hyperai.Plugins.Essential.Units
         public async Task EchoOff(Friend friend)
         {
             _service.Off(friend.Identity);
-            await friend.SendAsync("Echo off".MakeMessageChain());
+            await friend.SendPlainAsync("你关掉了回声模式。");
         }
 
         [Receive(MessageEventType.Group)]
         [Extract("!echo.off")]
+        [CheckTicket("echo.control")]
         public async Task EchoOff(Group group)
         {
             _service.Off(group.Identity);
-            await group.SendAsync("Echo off".MakeMessageChain());
-        }
-
-        [Receive(MessageEventType.Group)]
-        [Extract("!image")]
-        public async Task Image(Group group)
-        {
-            var builder = new MessageChainBuilder().AddImage(new Uri(@"E:\Pictures\DOAX-VenusVacation\DOAX-VenusVacation_200207_191722.jpg"));
-            await group.SendAsync(builder.Build());
+            await group.SendPlainAsync("群里关闭了回声模式。");
         }
     }
 }

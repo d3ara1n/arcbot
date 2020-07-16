@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ac682.Hyperai.Plugins.Essential.Models
+﻿namespace Ac682.Hyperai.Plugins.Essential.Models
 {
     public class EchoTrack
     {

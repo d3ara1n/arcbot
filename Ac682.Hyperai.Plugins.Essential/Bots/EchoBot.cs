@@ -2,7 +2,7 @@
 using Hyperai.Messages;
 using Hyperai.Relations;
 using HyperaiShell.Foundation.Bots;
-using HyperaiShell.Foundation.Extensions;
+using HyperaiShell.Foundation.ModelExtensions;
 
 namespace Ac682.Hyperai.Plugins.Essential.Bots
 {
