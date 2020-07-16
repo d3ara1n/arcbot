@@ -17,9 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Hyperai.Abstractions\Hyperai.Abstractions\Hyperai.Abstractions.csproj" />
-    <ProjectReference Include="..\..\Hyperai.Units.Abstractions\Hyperai.Units.Abstractions\Hyperai.Units.Abstractions.csproj" />
-    <ProjectReference Include="..\..\HyperaiShell.Foundation\HyperaiShell.Foundation\HyperaiShell.Foundation.csproj" />
+    <PackageReference Include="Hyperai.Abstractions" Version="2020.7.17"/>
+    <PackageReference Include="Hyperai.Units.Abstractions" Version="2020.7.17"/>
+    <PackageReference Include="HyperaiShell.Foundation" Version="2020.7.17"/>
   </ItemGroup>
 
 </Project>
