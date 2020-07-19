@@ -1,4 +1,5 @@
 ﻿using Ac682.Hyperai.Plugins.Essential.Services;
+using Hyperai.Events;
 using Hyperai.Messages;
 using Hyperai.Relations;
 using HyperaiShell.Foundation.Bots;
@@ -13,14 +14,14 @@ namespace Ac682.Hyperai.Plugins.Essential.Bots
         {
             _service = service;
         }
-        public override void OnFriendMessage(Friend friend, MessageChain message)
+        public override void OnFriendMessage(object sender, FriendMessageEventArgs args)
         {
-            if (_service.IsOn(friend.Identity)) friend.SendAsync(message.AsReadable()).Wait();
+            if (_service.IsOn(args.User.Identity)) args.User.SendAsync(args.Message.AsReadable()).Wait();
         }
 
-        public override void OnGroupMessage(Member member, Group group, MessageChain message)
+        public override void OnGroupMessage(object sender, GroupMessageEventArgs args)
         {
-            if (_service.IsOn(group.Identity)) group.SendAsync(message.AsReadable()).Wait();
+            if (_service.IsOn(args.Group.Identity)) args.Group.SendAsync(args.Message.AsReadable()).Wait();
         }
     }
 }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Ac682.Hyperai.Plugins.Essential.Units
 {
-    public class AuthCtl : UnitBase
+    public class AuthUnitCtl : UnitBase
     {
         [Receive(MessageEventType.Group)]
         [Extract("!auth.grant.limit {who} {permission} {limit}")]
