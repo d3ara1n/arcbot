@@ -17,9 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hyperai.Abstractions" Version="2020.7.20"/>
-    <PackageReference Include="Hyperai.Units.Abstractions" Version="2020.7.20"/>
-    <PackageReference Include="HyperaiShell.Foundation" Version="2020.7.20"/>
+    <PackageReference Include="Hyperai.Abstractions" Version="2020.7.23" />
+    <PackageReference Include="Hyperai.Units.Abstractions" Version="2020.7.23" />
+    <PackageReference Include="HyperaiShell.Foundation" Version="2020.7.23" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
 </Project>
