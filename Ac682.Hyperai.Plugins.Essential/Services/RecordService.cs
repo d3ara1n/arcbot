@@ -47,7 +47,7 @@ namespace Ac682.Hyperai.Plugins.Essential.Services
                     dic.Add(record.Who, 1);
                 }
             }
-            return dic.Select(x => (x.Key, x.Value)).OrderByDescending(x => x.Value).ToArray();
+            return dic.Select(x => (x.Key, x.Value)).OrderByDescending(x => x.Value).Take(10).ToArray();
         }
     }
 }

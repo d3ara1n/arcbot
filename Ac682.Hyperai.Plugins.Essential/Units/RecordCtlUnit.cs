@@ -61,7 +61,7 @@ namespace Ac682.Hyperai.Plugins.Essential.Units
         public async Task IsRecoding(Group group)
         {
             GroupRecordState state = group.Retrieve(() => new GroupRecordState());
-            await group.SendPlainAsync($"Is {state.IsOn switch { true => "On", false => "Off" }}");
+            await group.SendPlainAsync($"Is {(state.IsOn ? "on" : "off")}.");
         }
 
         [Receive(MessageEventType.Group)]
@@ -73,7 +73,7 @@ namespace Ac682.Hyperai.Plugins.Essential.Units
             int n = records.Count();
             if (n > 0)
             {
-                var builder = new StringBuilder($"{group.Name} ranks: ");
+                var builder = new StringBuilder($"{group.Name} 历史发言数排行: ");
                 for (int i = 0; i < n; i++)
                 {
                     var member = new Member()
@@ -82,7 +82,7 @@ namespace Ac682.Hyperai.Plugins.Essential.Units
                         Group = new Lazy<Group>(group)
                     };
                     member = await _client.RequestAsync(member);
-                    builder.Append($"\n[{i}]{member.DisplayName}({member.Identity}): {records[i].Item2}");
+                    builder.Append($"\n[{(i > 0? i.ToString(): "💦")}]{member.DisplayName}({member.Identity}): {records[i].Item2}pcs");
                 }
                 await group.SendPlainAsync(builder.ToString());
             }

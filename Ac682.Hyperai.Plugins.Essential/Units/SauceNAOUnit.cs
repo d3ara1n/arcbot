@@ -45,7 +45,7 @@ namespace Ac682.Hyperai.Plugins.Essential.Units
             try
             {
                 string tmp = Path.GetTempFileName();
-                
+
                 using (var reader = img.OpenRead())
                 {
                     using FileStream writer = new FileStream(tmp, FileMode.Append);
@@ -59,13 +59,11 @@ namespace Ac682.Hyperai.Plugins.Essential.Units
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
-                    var builder = new MessageChainBuilder();
-                    var quote = new Quote(image.MessageId ?? 0);
-                    if (quote.MessageId != 0) builder.Add(quote);
+                    var builder = image.CanBeReplied() ? image.MakeReply() : new MessageChainBuilder();
                     builder.AddPlain("Result: \n");
                     var obj = JsonConvert.DeserializeObject<JObject>(json);
                     //builder.Add(img);
-                    foreach(var result in obj.Value<JArray>("results"))
+                    foreach (var result in obj.Value<JArray>("results"))
                     {
                         var thumbnail = result["header"].Value<string>("thumbnail");
                         var similarity = result["header"].Value<string>("similarity");
