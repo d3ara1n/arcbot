@@ -82,7 +82,35 @@ namespace Ac682.Hyperai.Plugins.Essential.Units
                         Group = new Lazy<Group>(group)
                     };
                     member = await _client.RequestAsync(member);
-                    builder.Append($"\n[{(i > 0? i.ToString(): "💦")}]{member.DisplayName}({member.Identity}): {records[i].Item2}pcs");
+                    builder.Append($"\n[{(i > 0 ? i.ToString() : "💦")}]{member.DisplayName}({member.Identity}): {records[i].Item2}pcs");
+                }
+                await group.SendPlainAsync(builder.ToString());
+            }
+            else
+            {
+                await group.SendPlainAsync("No records.");
+            }
+        }
+
+        [Receive(MessageEventType.Group)]
+        [Extract("!record.rank {day}")]
+        [CheckTicket("record.rank")]
+        public async Task QueryRecordsByDay(Group group, long day)
+        {
+            var records = _service.Rank(group, DateTime.Now.AddDays(-day));
+            int n = records.Count();
+            if (n > 0)
+            {
+                var builder = new StringBuilder($"{group.Name} {day} 天前发言数排行: ");
+                for (int i = 0; i < n; i++)
+                {
+                    var member = new Member()
+                    {
+                        Identity = records[i].Item1,
+                        Group = new Lazy<Group>(group)
+                    };
+                    member = await _client.RequestAsync(member);
+                    builder.Append($"\n[{(i > 0 ? i.ToString() : "💦")}]{member.DisplayName}({member.Identity}): {records[i].Item2}pcs");
                 }
                 await group.SendPlainAsync(builder.ToString());
             }

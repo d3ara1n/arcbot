@@ -1,5 +1,9 @@
 ﻿{
-    "Hello": "World",
+    "Services": {
+        "ReportService": {
+            "Enabled": true
+        }
+    },
     "Gauss": [
         "{0}能被0整除。",
         "{0}能完整地背出圆周率——是倒着背。",
