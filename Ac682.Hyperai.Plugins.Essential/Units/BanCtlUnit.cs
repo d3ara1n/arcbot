@@ -70,8 +70,7 @@ namespace Ac682.Hyperai.Plugins.Essential
         [CheckTicket("blacklist.control.query")]
         public async Task Check(Friend friend, long who)
         {
-            string reason = null;
-            var isBanned = _service.IsBanned(who, out reason);
+            _ = _service.IsBanned(who, out string reason);
             await friend.SendPlainAsync($"{who} has been banned for {reason}.");
         }
 
@@ -83,8 +82,7 @@ namespace Ac682.Hyperai.Plugins.Essential
             var at = (At)who.FirstOrDefault(x => x is At);
             if (at != null)
             {
-                string reason = null;
-                var isBanned = _service.IsBanned(at.TargetId, out reason);
+                _ = _service.IsBanned(at.TargetId, out string reason);
                 await group.SendPlainAsync($"{at.TargetId} has been banned for {reason}.");
             }
         }

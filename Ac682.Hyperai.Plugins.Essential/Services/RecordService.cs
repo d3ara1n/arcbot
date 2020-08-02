@@ -32,9 +32,10 @@ namespace Ac682.Hyperai.Plugins.Essential.Services
             };
             _repository.Store(record);
         }
-        public (long, int)[] Rank(Group group)
+        public (long, int)[] Rank(Group group, DateTime? date = null)
         {
-            var records = _repository.Query<Record>().Where(x => x.Group == group.Identity).ToEnumerable();
+            long timestamp = date == null ? 0L : (long)(date.Value - new DateTime(1970, 1, 1)).TotalSeconds;
+            var records = _repository.Query<Record>().Where(x => x.Group == group.Identity && (date == null || timestamp == x.TimeStamp)).ToEnumerable();
             var dic = new Dictionary<long, int>();
             foreach (var record in records)
             {

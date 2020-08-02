@@ -30,7 +30,7 @@ namespace Ac682.Hyperai.Plugins.Essential.Units
             var member = new Member() { Identity = who, Group = new Lazy<Group>(group) };
             var expire = new DateTime(1970, 1, 1).AddSeconds(timestamp);
             member.GrantExpiry(permission, expire);
-            await group.SendAsync($"[hyper.at({who})]拿到了 {permission} 许可. 许可将在 {expire.ToString()} 后过期.".MakeMessageChain());
+            await group.SendAsync($"[hyper.at({who})]拿到了 {permission} 许可. 许可将在 {expire} 后过期.".MakeMessageChain());
         }
 
         [Receive(MessageEventType.Group)]
