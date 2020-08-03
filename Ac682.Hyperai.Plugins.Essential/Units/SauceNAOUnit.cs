@@ -21,18 +21,9 @@ namespace Ac682.Hyperai.Plugins.Essential.Units
 {
     public class SauceNAOUnit : UnitBase
     {
-        private readonly ILogger _logger;
-        private readonly IMessageChainFormatter _formatter;
-
-        public SauceNAOUnit(ILogger<SauceNAOUnit> logger, IMessageChainFormatter formatter)
-        {
-            _logger = logger;
-            _formatter = formatter;
-        }
 
         [Receive(MessageEventType.Group)]
         [Extract("!sauce {image}")]
-        [CheckTicket("sauce.get")]
         public async Task GetSauce(MessageChain image, Group group, MessageChain raw, Member sender)
         {
             var img = (Image)image.FirstOrDefault(x => x is Image);

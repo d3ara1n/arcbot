@@ -47,8 +47,7 @@ namespace Ac682.Hyperai.Plugins.Essential.Units
         [CheckTicket("record.control.off")]
         public async Task TurnOffRecoding(Group group)
         {
-            GroupRecordState state;
-            using (group.For(out state, () => new GroupRecordState()))
+            using (group.For(out GroupRecordState state, () => new GroupRecordState()))
             {
                 state.IsOn = false;
                 await group.SendPlainAsync("Recording ended.");
@@ -66,7 +65,6 @@ namespace Ac682.Hyperai.Plugins.Essential.Units
 
         [Receive(MessageEventType.Group)]
         [Extract("!record.rank")]
-        [CheckTicket("record.rank")]
         public async Task QueryRecords(Group group)
         {
             var records = _service.Rank(group);
@@ -94,14 +92,14 @@ namespace Ac682.Hyperai.Plugins.Essential.Units
 
         [Receive(MessageEventType.Group)]
         [Extract("!record.rank {day}")]
-        [CheckTicket("record.rank")]
-        public async Task QueryRecordsByDay(Group group, long day)
+        public async Task QueryRecordsByDay(Group group, int day)
         {
-            var records = _service.Rank(group, DateTime.Now.AddDays(-day));
+            var today = DateTime.Now.AddDays(-day);
+            var records = _service.Rank(group, today);
             int n = records.Count();
             if (n > 0)
             {
-                var builder = new StringBuilder($"{group.Name} {day} 天前发言数排行: ");
+                var builder = new StringBuilder($"{group.Name} {today:yyyy年MM月d日} 发言数排行: ");
                 for (int i = 0; i < n; i++)
                 {
                     var member = new Member()

@@ -34,11 +34,12 @@ namespace Ac682.Hyperai.Plugins.Essential.Services
         }
         public (long, int)[] Rank(Group group, DateTime? date = null)
         {
-            long timestamp = date == null ? 0L : (long)(date.Value - new DateTime(1970, 1, 1)).TotalSeconds;
-            var records = _repository.Query<Record>().Where(x => x.Group == group.Identity && (date == null || timestamp == x.TimeStamp)).ToEnumerable();
+            var records = _repository.Query<Record>().Where(x => x.Group == group.Identity).ToEnumerable();
             var dic = new Dictionary<long, int>();
             foreach (var record in records)
             {
+                var that = new DateTime(1970, 1, 1).AddSeconds(record.TimeStamp);
+                if (!(date != null && date.Value.Year == that.Year && date.Value.DayOfYear == that.DayOfYear)) continue;
                 if (dic.ContainsKey(record.Who))
                 {
                     dic[record.Who]++;
