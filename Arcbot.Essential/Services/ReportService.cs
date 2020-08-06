@@ -3,7 +3,7 @@ using Hyperai.Units;
 using HyperaiShell.Foundation.Plugins;
 using Microsoft.Extensions.Configuration;
 
-namespace Ac682.Hyperai.Plugins.Essential.Services
+namespace Arcbot.Essential.Services
 {
     public class ReportService
     {

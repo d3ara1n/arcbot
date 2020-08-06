@@ -1,8 +1,8 @@
-﻿using Ac682.Hyperai.Plugins.Essential.Models;
+﻿using Arcbot.Essential.Models;
 using HyperaiShell.Foundation.Data;
 using HyperaiShell.Foundation.Plugins;
 
-namespace Ac682.Hyperai.Plugins.Essential.Services
+namespace Arcbot.Essential.Services
 {
     public class EchoService
     {

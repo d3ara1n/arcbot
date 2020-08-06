@@ -10,7 +10,7 @@ using HyperaiShell.Foundation.Services;
 using Hyperai.Relations;
 using HyperaiShell.Foundation.ModelExtensions;
 
-namespace Ac682.Hyperai.Plugins.Essential
+namespace Arcbot.Essential
 {
     public class BanCtlUnit : UnitBase
     {

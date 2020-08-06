@@ -6,7 +6,7 @@
     <Company>Unicore</Company>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/ac682/Ac682.Hyperai.Plugins.Essential</RepositoryUrl>
+    <RepositoryUrl>https://github.com/ac682/Arcbot.Essential</RepositoryUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 

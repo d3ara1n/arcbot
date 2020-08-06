@@ -1,6 +1,6 @@
 using HyperaiShell.Foundation.Bots;
 
-namespace Ac682.Hyperai.Plugins.Essential.Bots
+namespace Arcbot.Essential.Bots
 {
     public class ReportBot: BotBase
     {
