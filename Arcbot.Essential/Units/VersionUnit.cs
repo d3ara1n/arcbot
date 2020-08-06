@@ -6,6 +6,7 @@ using Hyperai.Units;
 using Hyperai.Units.Attributes;
 using HyperaiShell.Foundation;
 using HyperaiShell.Foundation.ModelExtensions;
+using HyperaiShell.Foundation.Plugins;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -36,7 +37,8 @@ namespace Arcbot.Essential.Units
             StringBuilder builder = new StringBuilder(": Version\n");
             builder.AppendLine($"CLR/{Assembly.GetAssembly(typeof(object)).GetName().Version}");
             builder.AppendLine($"Hyperai/{Assembly.GetAssembly(typeof(IApiClient)).GetName().Version}");
-            builder.AppendLine($"HyperaiShell/{Assembly.GetAssembly(typeof(UnitBase)).GetName().Version}");
+            builder.AppendLine($"Hyperai.Units/{Assembly.GetAssembly(typeof(UnitBase)).GetName().Version}");
+            builder.AppendLine($"HyperaiShell/{Assembly.GetAssembly(typeof(PluginBase)).GetName().Version}");
             builder.AppendLine($"Arcbot/{Assembly.GetAssembly(typeof(VersionUnit)).GetName().Version}");
             return builder.ToString();
         }
