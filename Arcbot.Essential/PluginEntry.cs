@@ -1,10 +1,10 @@
-﻿using Ac682.Hyperai.Plugins.Essential.Bots;
-using Ac682.Hyperai.Plugins.Essential.Services;
+﻿using Arcbot.Essential.Bots;
+using Arcbot.Essential.Services;
 using HyperaiShell.Foundation.Bots;
 using HyperaiShell.Foundation.Plugins;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Ac682.Hyperai.Plugins.Essential
+namespace Arcbot.Essential
 {
     public class PluginEntry : PluginBase
     {

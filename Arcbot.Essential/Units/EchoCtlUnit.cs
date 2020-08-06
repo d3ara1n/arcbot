@@ -1,4 +1,4 @@
-﻿using Ac682.Hyperai.Plugins.Essential.Services;
+﻿using Arcbot.Essential.Services;
 using Hyperai.Events;
 using Hyperai.Relations;
 using Hyperai.Units;
@@ -7,7 +7,7 @@ using HyperaiShell.Foundation.Authorization.Attributes;
 using HyperaiShell.Foundation.ModelExtensions;
 using System.Threading.Tasks;
 
-namespace Ac682.Hyperai.Plugins.Essential.Units
+namespace Arcbot.Essential.Units
 {
     public class EchoCtlUnit : UnitBase
     {

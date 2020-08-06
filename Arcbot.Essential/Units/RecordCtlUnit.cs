@@ -1,5 +1,5 @@
-﻿using Ac682.Hyperai.Plugins.Essential.Models;
-using Ac682.Hyperai.Plugins.Essential.Services;
+﻿using Arcbot.Essential.Models;
+using Arcbot.Essential.Services;
 using Hyperai.Events;
 using Hyperai.Messages;
 using Hyperai.Relations;
@@ -16,7 +16,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ac682.Hyperai.Plugins.Essential.Units
+namespace Arcbot.Essential.Units
 {
     public class RecordCtlUnit : UnitBase
     {

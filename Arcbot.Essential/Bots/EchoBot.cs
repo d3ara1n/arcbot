@@ -1,11 +1,11 @@
-﻿using Ac682.Hyperai.Plugins.Essential.Services;
+﻿using Arcbot.Essential.Services;
 using Hyperai.Events;
 using Hyperai.Messages;
 using Hyperai.Relations;
 using HyperaiShell.Foundation.Bots;
 using HyperaiShell.Foundation.ModelExtensions;
 
-namespace Ac682.Hyperai.Plugins.Essential.Bots
+namespace Arcbot.Essential.Bots
 {
     public class EchoBot : BotBase
     {

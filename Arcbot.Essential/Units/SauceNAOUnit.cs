@@ -17,7 +17,7 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Ac682.Hyperai.Plugins.Essential.Units
+namespace Arcbot.Essential.Units
 {
     public class SauceNAOUnit : UnitBase
     {

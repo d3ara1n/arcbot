@@ -1,5 +1,5 @@
-﻿using Ac682.Hyperai.Plugins.Essential.Models;
-using Ac682.Hyperai.Plugins.Essential.Services;
+﻿using Arcbot.Essential.Models;
+using Arcbot.Essential.Services;
 using Hyperai.Events;
 using Hyperai.Relations;
 using HyperaiShell.Foundation.Bots;
@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Ac682.Hyperai.Plugins.Essential.Bots
+namespace Arcbot.Essential.Bots
 {
     public class RecordBot : BotBase
     {

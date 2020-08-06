@@ -1,4 +1,4 @@
-﻿namespace Ac682.Hyperai.Plugins.Essential.Models
+﻿namespace Arcbot.Essential.Models
 {
     public class EchoTrack
     {

@@ -8,7 +8,7 @@ using HyperaiShell.Foundation.ModelExtensions;
 using System;
 using System.Threading.Tasks;
 
-namespace Ac682.Hyperai.Plugins.Essential.Units
+namespace Arcbot.Essential.Units
 {
     public class AuthUnitCtl : UnitBase
     {

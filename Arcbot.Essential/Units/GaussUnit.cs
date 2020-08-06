@@ -12,7 +12,7 @@ using HyperaiShell.Foundation.ModelExtensions;
 using HyperaiShell.Foundation.Plugins;
 using Microsoft.Extensions.Configuration;
 
-namespace Ac682.Hyperai.Plugins.Essential.Units
+namespace Arcbot.Essential.Units
 {
     public class GaussUnit : UnitBase
     {
