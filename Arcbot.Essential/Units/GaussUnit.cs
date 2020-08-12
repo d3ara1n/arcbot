@@ -31,7 +31,7 @@ namespace Arcbot.Essential.Units
         [Extract("!gauss {who}")]
         public async Task Write(long who, Group group, IApiClient client)
         {
-            var member = await client.RequestAsync<Member>(new Member() { Identity = who, Group = new Lazy<Group>(group) });
+            var member = await client.RequestAsync(new Member() { Identity = who, Group = new Lazy<Group>(group) });
             await Next(member.DisplayName, group);
         }
 
@@ -48,7 +48,7 @@ namespace Arcbot.Essential.Units
         {
             var ind = _random.Next(_count);
             var sel = _sections.Skip(ind).First().Value;
-            await group.SendPlainAsync(string.Format(sel, who));
+            await group.SendAsync(string.Format(sel, who).MakeMessageChain());
         }
     }
 }
