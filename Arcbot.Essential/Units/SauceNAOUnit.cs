@@ -27,8 +27,11 @@ namespace Arcbot.Essential.Units
         public async Task GetSauce(MessageChain image, Group group, MessageChain raw, Member sender)
         {
             var img = (Image)image.FirstOrDefault(x => x is Image);
-            await group.SendPlainAsync("在找了在找了😚");
-            if (img == null)
+
+            if (img != null)
+            {
+                await group.SendPlainAsync("在找了在找了😚");
+            }else
             {
                 await group.SendPlainAsync("木有图片😥");
                 return;
@@ -50,7 +53,7 @@ namespace Arcbot.Essential.Units
                 {
                     { new StreamContent(writer), "file", img.Url.AbsoluteUri }
                 };
-                var response = await client.PostAsync("search.php?output_type=2", content);
+                var response = await client.PostAsync("search.php?output_type=2&numres=3", content);
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();

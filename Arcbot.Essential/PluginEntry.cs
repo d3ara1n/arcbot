@@ -11,13 +11,11 @@ namespace Arcbot.Essential
         public override void ConfigureBots(IBotCollectionBuilder bots)
         {
             bots.Add<EchoBot>();
-            bots.Add<RecordBot>();
         }
 
         public override void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<EchoService>();
-            services.AddSingleton<RecordService>();
         }
     }
 }
