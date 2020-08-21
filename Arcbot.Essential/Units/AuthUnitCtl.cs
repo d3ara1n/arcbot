@@ -6,6 +6,7 @@ using Hyperai.Units.Attributes;
 using HyperaiShell.Foundation.Authorization.Attributes;
 using HyperaiShell.Foundation.ModelExtensions;
 using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace Arcbot.Essential.Units
@@ -15,6 +16,7 @@ namespace Arcbot.Essential.Units
         [Receive(MessageEventType.Group)]
         [Extract("!auth.grant.limit {who} {permission} {limit}")]
         [CheckTicket("whosyourdaddy")]
+        [Description("添加限次权限")]
         public async Task AuthLimited(long who, Group group, string permission, int limit)
         {
             var member = new Member() { Identity = who, Group = new Lazy<Group>(group) };
@@ -25,6 +27,7 @@ namespace Arcbot.Essential.Units
         [Receive(MessageEventType.Group)]
         [Extract("!auth.grant.expiry {who} {permission} {timestamp}")]
         [CheckTicket("whosyourdaddy")]
+        [Description("添加限时权限")]
         public async Task AuthExpiry(long who, Group group, string permission, long timestamp)
         {
             var member = new Member() { Identity = who, Group = new Lazy<Group>(group) };
@@ -36,6 +39,7 @@ namespace Arcbot.Essential.Units
         [Receive(MessageEventType.Group)]
         [Extract("!auth.grant {who} {permission}")]
         [CheckTicket("whosyourdaddy")]
+        [Description("添加无限制使用权限")]
         public async Task AuthNormal(long who, Group group, string permission)
         {
             var member = new Member() { Identity = who, Group = new Lazy<Group>(group) };
@@ -46,6 +50,7 @@ namespace Arcbot.Essential.Units
         [Receive(MessageEventType.Group)]
         [Extract("!auth.revoke {who} {permission}")]
         [CheckTicket("whosyourdaddy")]
+        [Description("撤销权限")]
         public async Task Revoke(long who, Group group, string permission)
         {
             var member = new Member() { Identity = who, Group = new Lazy<Group>(group) };
@@ -55,6 +60,7 @@ namespace Arcbot.Essential.Units
 
         [Receive(MessageEventType.Group)]
         [Extract("!auth.list {who}")]
+        [Description("枚举某人的权限")]
         public async Task List(long who, Group group, IApiClient client)
         {
             var member = new Member() { Identity = who, Group = new Lazy<Group>(group) };

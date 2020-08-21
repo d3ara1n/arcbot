@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Hyperai.Events;
@@ -37,6 +38,7 @@ namespace Arcbot.Essential.Units
 
         [Receive(MessageEventType.Group)]
         [Extract("[hyper.at({who})] nb")]
+        [Description("当某人很牛逼时，at他并加一个nb")]
         public async Task At(long who, Group group, IApiClient client)
         {
             await Write(who, group, client);
@@ -44,6 +46,7 @@ namespace Arcbot.Essential.Units
 
         [Receive(MessageEventType.Group)]
         [Extract("来点{who}笑话")]
+        [Description("牛逼的笑话")]
         public async Task Next(string who, Group group)
         {
             var ind = _random.Next(_count);

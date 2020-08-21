@@ -6,6 +6,7 @@ using Hyperai.Units.Attributes;
 using HyperaiShell.Foundation.Authorization.Attributes;
 using HyperaiShell.Foundation.ModelExtensions;
 using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace Arcbot.Essential.Units
@@ -14,6 +15,7 @@ namespace Arcbot.Essential.Units
     {
         [Receive(MessageEventType.Group)]
         [Extract("!ping")]
+        [Description("ping")]
         public async Task Ping(Group group)
         {
             await group.SendPlainAsync("pong!");

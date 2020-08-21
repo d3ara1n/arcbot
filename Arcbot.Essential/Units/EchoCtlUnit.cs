@@ -5,6 +5,7 @@ using Hyperai.Units;
 using Hyperai.Units.Attributes;
 using HyperaiShell.Foundation.Authorization.Attributes;
 using HyperaiShell.Foundation.ModelExtensions;
+using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace Arcbot.Essential.Units
@@ -20,6 +21,7 @@ namespace Arcbot.Essential.Units
 
         [Receive(MessageEventType.Friend)]
         [Extract("!echo.on")]
+        [Description("开启回声模式")]
         public async Task EchoOn(Friend friend)
         {
             _service.On(friend.Identity);
@@ -29,6 +31,7 @@ namespace Arcbot.Essential.Units
         [Receive(MessageEventType.Group)]
         [Extract("!echo.on")]
         [CheckTicket("echo.control")]
+        [Description("开启回声模式")]
         public async Task EchoOn(Group group)
         {
             _service.On(group.Identity);
@@ -37,6 +40,7 @@ namespace Arcbot.Essential.Units
 
         [Receive(MessageEventType.Friend)]
         [Extract("!echo.off")]
+        [Description("关闭回声模式")]
         public async Task EchoOff(Friend friend)
         {
             _service.Off(friend.Identity);
@@ -46,6 +50,7 @@ namespace Arcbot.Essential.Units
         [Receive(MessageEventType.Group)]
         [Extract("!echo.off")]
         [CheckTicket("echo.control")]
+        [Description("关闭回声模式")]
         public async Task EchoOff(Group group)
         {
             _service.Off(group.Identity);
