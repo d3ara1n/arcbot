@@ -24,7 +24,7 @@ namespace Arcbot.Essential.Units
     {
 
         [Receive(MessageEventType.Group)]
-        [Extract("*!sauce")]
+        [Extract("*!sauce", true)]
         [Description("用 SauceNAO 搜索图片出处")]
         public async Task GetSauce(Group group, MessageChain raw, Member sender)
         {
@@ -60,7 +60,7 @@ namespace Arcbot.Essential.Units
                 {
                     { new StreamContent(writer), "file", img.Url.AbsoluteUri }
                 };
-                var response = await client.PostAsync("search.php?output_type=2&numres=3", content);
+                var response = await client.PostAsync("search.php?output_type=2&numres=1", content);
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();

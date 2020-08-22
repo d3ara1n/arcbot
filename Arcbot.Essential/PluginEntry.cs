@@ -16,6 +16,7 @@ namespace Arcbot.Essential
         public override void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<EchoService>();
+            services.AddSingleton<ProfileService>();
         }
     }
 }
