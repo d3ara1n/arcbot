@@ -29,32 +29,34 @@ namespace Arcbot.Essential.Units
         {
             var coin = _service.Inspect<Coin>(member);
             var now = DateTime.Now;
-            if (coin == null || (coin.LastModified.Year == now.Year && coin.LastModified.DayOfYear < now.DayOfYear))
+            if (coin == null || (coin.LastModified.Date < now.Date))
             {
-                _service.PutCoin(member, 10);
+                int up = coin != null && coin.LastModified.Date.AddDays(1) == now.Date ? 15 : 10;
+                _service.PutCoin(member, up);
                 var builder = raw.CanBeReplied() ? raw.MakeReply() : new MessageChainBuilder();
-                builder.AddPlain("签到成功, 硬币+10");
+                builder.AddPlain($"签到成功, 硬币+{up}🎉");
                 await group.SendAsync(builder.Build());
-            }else
+            }
+            else
             {
                 var builder = raw.CanBeReplied() ? raw.MakeReply() : new MessageChainBuilder();
                 builder.AddPlain("你已经签到过了😥");
                 await group.SendAsync(builder.Build());
             }
         }
-        
+
         [Receive(MessageEventType.Group)]
         [Extract("!profile")]
         [Description("查看我的信息")]
         public async Task Profile(Member member, Group group, MessageChain raw)
         {
-            var builder = raw.CanBeReplied()? raw.MakeReply() : new MessageChainBuilder();
+            var builder = raw.CanBeReplied() ? raw.MakeReply() : new MessageChainBuilder();
             StringBuilder sb = new StringBuilder();
             sb.Append("你, ");
             sb.AppendLine(member.DisplayName);
             sb.AppendLine("\n库存: ");
             int cnt = 0;
-            foreach(var item in _service.Items(member))
+            foreach (var item in _service.Items(member))
             {
                 cnt++;
                 sb.AppendLine($"{cnt}.{item.DisplayName} - {item.Stack} 个");
