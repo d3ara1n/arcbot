@@ -83,6 +83,23 @@ namespace Arcbot.Essential.Services
             return profile == null ? Enumerable.Empty<Item>() : profile.Inventory.AsEnumerable();
         }
 
+        public bool Consume(User user, Item what)
+        {
+            var profile = _repository.Query<Profile>().Where(x => x.UserAttachedTo == user.Identity).FirstOrDefault() ?? new Profile(user.Identity);
+            var stack = profile.Inventory.FirstOrDefault(x => x.GetType() == what.GetType());
+            if (stack != null && stack.Stack > what.Stack)
+            {
+                stack.Stack -= what.Stack;
+                stack.LastModified = DateTime.Now;
+                _repository.Upsert(profile);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public long CountCoin(User user) => Count<Coin>(user);
         public long TakeCoin(User user, long howMany) => Take(user, new Coin(howMany));
         public long PutCoin(User user, long howMany) => Put(user, new Coin(howMany));

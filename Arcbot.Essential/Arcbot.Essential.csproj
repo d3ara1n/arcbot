@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <Version>1.0.6</Version>
+    <Version>1.0.7</Version>
     <Authors>Ac682</Authors>
     <Company>Unicore</Company>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -18,9 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hyperai.Abstractions" Version="2020.8.21.1" />
-    <PackageReference Include="Hyperai.Units.Abstractions" Version="2020.8.17.1" />
-    <PackageReference Include="HyperaiShell.Foundation" Version="2020.8.21" />
+    <PackageReference Include="Hyperai.Abstractions" Version="2020.9.19" />
+    <PackageReference Include="Hyperai.Units.Abstractions" Version="2020.9.19" />
+    <PackageReference Include="HyperaiShell.Foundation" Version="2020.9.19" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 </Project>
