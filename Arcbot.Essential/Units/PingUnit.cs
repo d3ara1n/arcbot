@@ -15,7 +15,7 @@ namespace Arcbot.Essential.Units
     {
         [Receive(MessageEventType.Group)]
         [Extract("!ping")]
-        [Description("ping")]
+        [Description("pong!")]
         public async Task Ping(Group group)
         {
             await group.SendPlainAsync("pong!");

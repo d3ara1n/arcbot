@@ -25,7 +25,7 @@ namespace Arcbot.Essential.Units
         string GetHelpText()
         {
             var entries = _service.GetEntries();
-            StringBuilder builder = new StringBuilder();
+            StringBuilder builder = new();
             foreach (var ent in entries)
             {
                 var desc = ent.Action.GetCustomAttribute<DescriptionAttribute>();
@@ -42,9 +42,9 @@ namespace Arcbot.Essential.Units
                     _ => "👣"
                 };
 
-                StringBuilder sb = new StringBuilder();
+                StringBuilder sb = new();
                 sb.Append(receStr);
-                sb.Append(" ");
+                sb.Append(' ');
                 sb.AppendLine(extr.RawString);
                 sb.Append(" - ");
                 sb.AppendLine(desc.Description);

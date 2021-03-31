@@ -51,7 +51,7 @@ namespace Arcbot.Essential.Units
         public async Task Profile(Member member, Group group, MessageChain raw)
         {
             var builder = raw.CanBeReplied() ? raw.MakeReply() : new MessageChainBuilder();
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             sb.Append("你, ");
             sb.AppendLine(member.DisplayName);
             sb.AppendLine("\n库存: ");

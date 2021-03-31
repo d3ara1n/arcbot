@@ -38,13 +38,13 @@ namespace Arcbot.Essential.Units
         private string Summarize()
         {
             Type client = Context.Client.GetType();
-            StringBuilder builder = new StringBuilder(": Version\n");
+            StringBuilder builder = new("[Version]\n");
             builder.AppendLine($"CLR/{Assembly.GetAssembly(typeof(object)).GetName().Version}");
             builder.AppendLine($"Hyperai/{Assembly.GetAssembly(typeof(IApiClient)).GetName().Version}");
             builder.AppendLine($"Hyperai.Units/{Assembly.GetAssembly(typeof(UnitBase)).GetName().Version}");
             builder.AppendLine($"HyperaiShell/{Assembly.GetAssembly(typeof(PluginBase)).GetName().Version}");
             builder.AppendLine($"{client.Name}/{Assembly.GetAssembly(client).GetName().Version}");
-            builder.Append($"Arcbot/{Assembly.GetAssembly(typeof(VersionUnit)).GetName().Version}");
+            builder.Append($"arcbot/{Assembly.GetAssembly(typeof(VersionUnit)).GetName().Version}");
             return builder.ToString();
         }
     }
