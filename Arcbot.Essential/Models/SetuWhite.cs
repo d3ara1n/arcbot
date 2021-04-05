@@ -4,7 +4,9 @@ namespace Arcbot.Essential.Models
     {
         public bool IsOn { get; set; }
 
+        public bool SexyMode { get; set; }
+
         public SetuWhite(bool on) => IsOn = on;
-        public SetuWhite() => IsOn = false;
+        public SetuWhite() : this(false) { }
     }
 }
