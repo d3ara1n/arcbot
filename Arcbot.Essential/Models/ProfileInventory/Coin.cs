@@ -7,7 +7,9 @@ namespace Arcbot.Essential.Models.ProfileInventory
             Stack = count;
         }
 
-        public Coin() : this(0) { }
+        public Coin() : this(0)
+        {
+        }
 
         public override string DisplayName => "硬币";
     }

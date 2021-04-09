@@ -29,9 +29,9 @@ namespace Arcbot.Essential.Units
         {
             var coin = _service.Inspect<Coin>(member);
             var now = DateTime.Now;
-            if (coin == null || (coin.LastModified.Date < now.Date))
+            if (coin == null || coin.LastModified.Date < now.Date)
             {
-                int up = coin != null && coin.LastModified.Date.AddDays(1) == now.Date ? 15 : 10;
+                var up = coin != null && coin.LastModified.Date.AddDays(1) == now.Date ? 15 : 10;
                 _service.PutCoin(member, up);
                 var builder = raw.CanBeReplied() ? raw.MakeReply() : new MessageChainBuilder();
                 builder.AddPlain($"签到成功, 硬币+{up}🎉");
@@ -55,12 +55,13 @@ namespace Arcbot.Essential.Units
             sb.Append("你, ");
             sb.AppendLine(member.DisplayName);
             sb.AppendLine("\n库存: ");
-            int cnt = 0;
+            var cnt = 0;
             foreach (var item in _service.Items(member))
             {
                 cnt++;
                 sb.AppendLine($"{cnt}.{item.DisplayName} - {item.Stack} 个");
             }
+
             builder.AddPlain(sb.ToString().Trim());
             await group.SendAsync(builder.Build());
         }

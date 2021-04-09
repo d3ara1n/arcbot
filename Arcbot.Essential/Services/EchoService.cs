@@ -12,9 +12,10 @@ namespace Arcbot.Essential.Services
         {
             _repository = repository.Value;
         }
+
         public void On(long num)
         {
-            EchoTrack track = _repository.Query<EchoTrack>().Where(x => x.Target == num).FirstOrDefault();
+            var track = _repository.Query<EchoTrack>().Where(x => x.Target == num).FirstOrDefault();
             if (track != null)
             {
                 track.State = true;
@@ -22,13 +23,13 @@ namespace Arcbot.Essential.Services
             }
             else
             {
-                _repository.Store(new EchoTrack() { State = true, Target = num });
+                _repository.Store(new EchoTrack {State = true, Target = num});
             }
         }
 
         public void Off(long num)
         {
-            EchoTrack track = _repository.Query<EchoTrack>().Where(x => x.Target == num).FirstOrDefault();
+            var track = _repository.Query<EchoTrack>().Where(x => x.Target == num).FirstOrDefault();
             if (track != null)
             {
                 track.State = false;
@@ -36,7 +37,7 @@ namespace Arcbot.Essential.Services
             }
             else
             {
-                _repository.Store(new EchoTrack() { State = false, Target = num });
+                _repository.Store(new EchoTrack {State = false, Target = num});
             }
         }
 

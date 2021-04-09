@@ -1,20 +1,16 @@
-using System;
-using System.Linq;
-using System.Reflection;
-using Hyperai.Units;
 using System.ComponentModel;
-using System.Collections.Generic;
-using Hyperai.Units.Attributes;
+using System.Reflection;
 using System.Text;
 using Hyperai.Events;
 using Hyperai.Relations;
+using Hyperai.Units;
+using Hyperai.Units.Attributes;
 using HyperaiShell.Foundation.ModelExtensions;
 
 namespace Arcbot.Essential.Units
 {
     public class HelpUnit : UnitBase
     {
-
         private readonly IUnitService _service;
 
         public HelpUnit(IUnitService service)
@@ -22,7 +18,7 @@ namespace Arcbot.Essential.Units
             _service = service;
         }
 
-        string GetHelpText()
+        private string GetHelpText()
         {
             var entries = _service.GetEntries();
             StringBuilder builder = new();
@@ -30,11 +26,11 @@ namespace Arcbot.Essential.Units
             {
                 var desc = ent.Action.GetCustomAttribute<DescriptionAttribute>();
                 var extr = ent.Action.GetCustomAttribute<ExtractAttribute>();
-                if(desc == null || extr == null) continue;
+                if (desc == null || extr == null) continue;
 
                 var rece = ent.Action.GetCustomAttribute<ReceiveAttribute>();
 
-                string receStr = rece.Type switch
+                var receStr = rece.Type switch
                 {
                     MessageEventType.Friend => "🧑‍🤝‍🧑",
                     MessageEventType.Group => "👪",
@@ -51,6 +47,7 @@ namespace Arcbot.Essential.Units
 
                 builder.AppendLine(sb.ToString());
             }
+
             return builder.ToString().Trim();
         }
 

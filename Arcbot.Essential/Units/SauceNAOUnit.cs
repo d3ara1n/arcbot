@@ -1,28 +1,23 @@
-using Hyperai.Units;
-using System.Linq;
-using Hyperai.Units.Attributes;
-using Hyperai.Events;
-using HyperaiShell.Foundation.Authorization.Attributes;
-using Hyperai.Messages;
-using Hyperai.Relations;
-using Hyperai.Messages.ConcreteModels;
-using System.IO;
 using System;
-using HyperaiShell.Foundation.ModelExtensions;
-using System.Threading.Tasks;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using System.Net.Http;
-using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
+using Hyperai.Events;
+using Hyperai.Messages;
+using Hyperai.Messages.ConcreteModels;
+using Hyperai.Relations;
+using Hyperai.Units;
+using Hyperai.Units.Attributes;
+using HyperaiShell.Foundation.ModelExtensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
-using System.Text;
-using System.ComponentModel;
 
 namespace Arcbot.Essential.Units
 {
     public class SauceNAOUnit : UnitBase
     {
-
         [Receive(MessageEventType.Group)]
         [Extract("*!sauce", true)]
         [Description("用 SauceNAO 搜索图片出处")]
@@ -32,7 +27,7 @@ namespace Arcbot.Essential.Units
             if (raw.Any(x => x is Quote))
             {
                 var source = await raw.OfMessageRepliedByAsync();
-                img = (ImageBase)source.FirstOrDefault(x => x is ImageBase);
+                img = (ImageBase) source.FirstOrDefault(x => x is ImageBase);
             }
 
             if (img != null)
@@ -40,21 +35,21 @@ namespace Arcbot.Essential.Units
                 await group.SendPlainAsync("在找了在找了😚");
                 try
                 {
-
                     using MemoryStream writer = new();
                     using (var reader = img.OpenRead())
                     {
                         reader.CopyTo(writer);
                         writer.Position = 0;
                     }
+
                     var client = new HttpClient
                     {
                         BaseAddress = new Uri("https://saucenao.com/")
                     };
                     var content = new MultipartFormDataContent
-                {
-                    { new StreamContent(writer), "file", img.Url.AbsoluteUri }
-                };
+                    {
+                        {new StreamContent(writer), "file", img.Url.AbsoluteUri}
+                    };
                     var response = await client.PostAsync("search.php?output_type=2&numres=1", content);
                     if (response.IsSuccessStatusCode)
                     {
@@ -73,13 +68,14 @@ namespace Arcbot.Essential.Units
                             builder.AddImage(new Uri(thumbnail));
                             builder.AddPlain($"([{similarity}%]({title} - {member}: {url})\n");
                         }
+
                         var msg = builder.Build();
                         await group.SendAsync(msg);
                     }
                 }
                 catch
                 {
-                    await group.SendPlainAsync($"出错了出错了😫");
+                    await group.SendPlainAsync("出错了出错了😫");
                 }
             }
             else

@@ -5,14 +5,13 @@ namespace Arcbot.Essential.Models
 {
     public class Profile
     {
-        public int Id { get; set; }
-        public long UserAttachedTo { get; set; }
-        public ConcurrentBag<Item> Inventory { get; set; } = new ConcurrentBag<Item>();
-
-
         public Profile(long userAttachedTo)
         {
             UserAttachedTo = userAttachedTo;
         }
+
+        public int Id { get; set; }
+        public long UserAttachedTo { get; set; }
+        public ConcurrentBag<Item> Inventory { get; set; } = new();
     }
 }
