@@ -1,30 +1,28 @@
+using System;
 using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
 using Arcbot.Essential.Models;
+using Arcbot.Essential.Services;
 using Hyperai.Events;
+using Hyperai.Messages;
 using Hyperai.Relations;
 using Hyperai.Units;
 using Hyperai.Units.Attributes;
-using Wupoo;
-using HyperaiShell.Foundation.ModelExtensions;
-using Newtonsoft.Json.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Hyperai.Messages;
-using System;
-using Microsoft.Extensions.Logging;
-using Arcbot.Essential.Services;
 using HyperaiShell.Foundation.Authorization.Attributes;
-using System.Linq;
+using HyperaiShell.Foundation.ModelExtensions;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
+using Wupoo;
 
 namespace Arcbot.Essential.Units
 {
     public class SetuUnit : UnitBase
     {
-        private readonly Random random = new();
-        private readonly WapooOptions options = new();
-
         private readonly ILogger _logger;
         private readonly ProfileService _profileService;
+        private readonly WapooOptions options = new();
+        private readonly Random random = new();
 
         public SetuUnit(ILogger<SetuUnit> logger, ProfileService profileService)
         {
@@ -37,10 +35,13 @@ namespace Arcbot.Essential.Units
         [Description("消耗 0~2 个硬币抽取一张随机 setu")]
         public async Task Setu(Group group, Member member)
         {
-            int cost = random.Next(3);
-            SetuWhite white = group.Retrieve(() => new SetuWhite());
-            string url = white.SexyMode ? "http://api.yuban10703.xyz:2333/setu_v2" : "http://api.yuban10703.xyz:2333/setu_v4";
-            _logger.LogInformation("{groupName}({groupId}) requests one setu. (IsOn = {isOn}, SexyMode = {sexyMode}).", group.Name, group.Identity, white.IsOn, white.SexyMode);
+            var cost = random.Next(3);
+            var white = group.Retrieve(() => new SetuWhite());
+            var url = white.SexyMode
+                ? "http://api.yuban10703.xyz:2333/setu_v2"
+                : "http://api.yuban10703.xyz:2333/setu_v4";
+            _logger.LogInformation("{groupName}({groupId}) requests one setu. (IsOn = {isOn}, SexyMode = {sexyMode}).",
+                group.Name, group.Identity, white.IsOn, white.SexyMode);
             if (white.IsOn)
             {
                 if (_profileService.CountCoin(member) < cost)
@@ -48,28 +49,30 @@ namespace Arcbot.Essential.Units
                     await group.SendPlainAsync("你硬币不够.");
                     return;
                 }
+
                 SetuArtwork artwork = null;
                 var task1 = group.SendPlainAsync("来了来了😜");
                 var task2 = Request(url)
-                .ForJsonResult<JObject>(obj =>
-                {
-                    try
+                    .ForJsonResult<JObject>(obj =>
                     {
-                        artwork = obj.Value<JArray>("data").FirstOrDefault()?.ToObject<SetuArtwork>();
-                    }
-                    catch (Exception e)
-                    {
-                        _logger.LogError(e, "Fetching setu error.");
-                    }
-                })
-                .FetchAsync();
+                        try
+                        {
+                            artwork = obj.Value<JArray>("data").FirstOrDefault()?.ToObject<SetuArtwork>();
+                        }
+                        catch (Exception e)
+                        {
+                            _logger.LogError(e, "Fetching setu error.");
+                        }
+                    })
+                    .FetchAsync();
                 await task1;
                 await task2;
                 if (artwork != null)
                 {
                     var builder = new MessageChainBuilder();
                     builder.AddImage(new Uri(artwork.Original.Replace("pximg.net", "pixiv.cat"), UriKind.Absolute));
-                    builder.AddPlain($"\n[Pixiv]\nArtwork: {artwork.Title}({artwork.Artwork})\nAuthor: {artwork.Author}\nCost: {cost}💰\nUrl: {artwork.Original}\nTags: {string.Join(',', artwork.Tags)}");
+                    builder.AddPlain(
+                        $"\n[Pixiv]\nArtwork: {artwork.Title}({artwork.Artwork})\nAuthor: {artwork.Author}\nCost: {cost}💰\nUrl: {artwork.Original}\nTags: {string.Join(',', artwork.Tags)}");
                     _profileService.TakeCoin(member, cost);
                     await group.SendAsync(builder.Build());
                 }
@@ -78,7 +81,6 @@ namespace Arcbot.Essential.Units
                     await group.SendPlainAsync("出错力😥");
                 }
             }
-
         }
 
         [Receive(MessageEventType.Group)]
@@ -87,7 +89,7 @@ namespace Arcbot.Essential.Units
         [CheckTicket("setu.control")]
         public async Task On(Group group)
         {
-            using (group.For(out SetuWhite white, () => new SetuWhite(true)))
+            using (group.For(out var white, () => new SetuWhite(true)))
             {
                 white.IsOn = true;
                 await group.SendPlainAsync("车道铺好了.");
@@ -100,7 +102,7 @@ namespace Arcbot.Essential.Units
         [CheckTicket("setu.control")]
         public async Task Off(Group group)
         {
-            using (group.For(out SetuWhite white, () => new SetuWhite(false)))
+            using (group.For(out var white, () => new SetuWhite(false)))
             {
                 white.IsOn = false;
                 await group.SendPlainAsync("车道拆掉了.");
@@ -113,7 +115,7 @@ namespace Arcbot.Essential.Units
         [CheckTicket("setu.control")]
         public async Task Sexy(Group group, string mode)
         {
-            using (group.For(out SetuWhite white, () => new SetuWhite()))
+            using (group.For(out var white, () => new SetuWhite()))
             {
                 switch (mode)
                 {
@@ -137,7 +139,7 @@ namespace Arcbot.Essential.Units
 
         private Wapoo Request(string url)
         {
-            return new Wapoo(options, url);
+            return new(options, url);
         }
     }
 }

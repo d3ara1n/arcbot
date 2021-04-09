@@ -1,14 +1,14 @@
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 using Hyperai.Events;
 using Hyperai.Messages;
+using Hyperai.Messages.ConcreteModels;
+using Hyperai.Relations;
 using Hyperai.Units;
 using Hyperai.Units.Attributes;
 using HyperaiShell.Foundation.Authorization.Attributes;
-using Hyperai.Messages.ConcreteModels;
-using HyperaiShell.Foundation.Services;
-using Hyperai.Relations;
 using HyperaiShell.Foundation.ModelExtensions;
+using HyperaiShell.Foundation.Services;
 
 namespace Arcbot.Essential
 {
@@ -26,7 +26,7 @@ namespace Arcbot.Essential
         [CheckTicket("blacklist.control.add")]
         public async Task Ban(Group group, MessageChain who, string reason)
         {
-            var at = (At)who.FirstOrDefault(x => x is At);
+            var at = (At) who.FirstOrDefault(x => x is At);
             if (at != null)
             {
                 _service.Ban(at.TargetId, reason);
@@ -48,7 +48,7 @@ namespace Arcbot.Essential
         [CheckTicket("blacklist.control.remove")]
         public async Task Deban(Group group, MessageChain who)
         {
-            var at = (At)who.FirstOrDefault(x => x is At);
+            var at = (At) who.FirstOrDefault(x => x is At);
             if (at != null)
             {
                 _service.Deban(at.TargetId);
@@ -70,7 +70,7 @@ namespace Arcbot.Essential
         [CheckTicket("blacklist.control.query")]
         public async Task Check(Friend friend, long who)
         {
-            _ = _service.IsBanned(who, out string reason);
+            _ = _service.IsBanned(who, out var reason);
             await friend.SendPlainAsync($"{who} has been banned for {reason}.");
         }
 
@@ -79,10 +79,10 @@ namespace Arcbot.Essential
         [CheckTicket("blacklist.control.query")]
         public async Task Check(Group group, MessageChain who)
         {
-            var at = (At)who.FirstOrDefault(x => x is At);
+            var at = (At) who.FirstOrDefault(x => x is At);
             if (at != null)
             {
-                _ = _service.IsBanned(at.TargetId, out string reason);
+                _ = _service.IsBanned(at.TargetId, out var reason);
                 await group.SendPlainAsync($"{at.TargetId} has been banned for {reason}.");
             }
         }

@@ -1,5 +1,3 @@
-using Arcbot.Essential.Bots;
-using Arcbot.Essential.Services;
 using HyperaiShell.Foundation.Bots;
 using HyperaiShell.Foundation.Plugins;
 using Microsoft.Extensions.Configuration;
@@ -7,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Arcbot.ClassTable
 {
-    public class PluginEntry: PluginBase
+    public class PluginEntry : PluginBase
     {
         public override void ConfigureBots(IBotCollectionBuilder bots, IConfiguration config)
         {

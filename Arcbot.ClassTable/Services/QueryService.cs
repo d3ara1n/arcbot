@@ -5,7 +5,6 @@ namespace Arcbot.ClassTable.Services
 {
     public class QueryService
     {
-        
         private readonly IRepository _repository;
 
         public QueryService(IPluginRepository<PluginEntry> repository)

@@ -1,7 +1,5 @@
 ﻿using Arcbot.Essential.Services;
 using Hyperai.Events;
-using Hyperai.Messages;
-using Hyperai.Relations;
 using HyperaiShell.Foundation.Bots;
 using HyperaiShell.Foundation.ModelExtensions;
 

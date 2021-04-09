@@ -1,12 +1,12 @@
-﻿using Arcbot.Essential.Services;
+﻿using System.ComponentModel;
+using System.Threading.Tasks;
+using Arcbot.Essential.Services;
 using Hyperai.Events;
 using Hyperai.Relations;
 using Hyperai.Units;
 using Hyperai.Units.Attributes;
 using HyperaiShell.Foundation.Authorization.Attributes;
 using HyperaiShell.Foundation.ModelExtensions;
-using System.ComponentModel;
-using System.Threading.Tasks;
 
 namespace Arcbot.Essential.Units
 {

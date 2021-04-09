@@ -17,9 +17,10 @@ namespace Arcbot.Essential.Units
 {
     public class GaussUnit : UnitBase
     {
-        private readonly IEnumerable<IConfigurationSection> _sections;
         private readonly int _count;
         private readonly Random _random;
+        private readonly IEnumerable<IConfigurationSection> _sections;
+
         public GaussUnit(IPluginConfiguration<PluginEntry> configuration)
         {
             _sections = configuration.Value.GetSection("Gauss").GetChildren();
@@ -32,7 +33,7 @@ namespace Arcbot.Essential.Units
         [Extract("!gauss {who}")]
         public async Task Write(long who, Group group, IApiClient client)
         {
-            var member = await client.RequestAsync(new Member() { Identity = who, Group = new Lazy<Group>(group) });
+            var member = await client.RequestAsync(new Member {Identity = who, Group = new Lazy<Group>(group)});
             await Next(member.DisplayName, group);
         }
 
