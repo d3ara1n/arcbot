@@ -12,7 +12,7 @@ namespace Arcbot.Essential
         public override void ConfigureBots(IBotCollectionBuilder bots, IConfiguration config)
         {
             bots.Add<EchoBot>();
-            bots.Add<RepeaterBot>();
+            // bots.Add<RepeaterBot>();
         }
 
         public override void ConfigureServices(IServiceCollection services)

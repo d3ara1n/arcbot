@@ -24,13 +24,13 @@ namespace Arcbot.Essential.Bots
             var message = new MessageChain(args.Message.Where(x => !(x is Source or Quote))).Flatten();
             using (group.For(out GroupMessagePiece piece, () => new GroupMessagePiece(null)))
             {
+                piece.Count++;
                 if (piece.Message == message)
                 {
                     if (piece.Count == 2)
                     {
-                        group.SendAsync(args.Message.AsSendable()).Wait();
+                        group.SendAsync(args.Message.AsSendable());
                     }
-                    piece.Count++;
                 }
                 else
                 {

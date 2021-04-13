@@ -38,8 +38,8 @@ namespace Arcbot.Essential.Units
             var cost = random.Next(3);
             var white = group.Retrieve(() => new SetuWhite());
             var url = white.SexyMode
-                ? "http://api.yuban10703.xyz:2333/setu_v2"
-                : "http://api.yuban10703.xyz:2333/setu_v4";
+                ? "https://api.fantasyzone.cc/tu/?class=pc&type=json"
+                : "https://api.fantasyzone.cc/tu/?class=r18&type=json";
             _logger.LogInformation("{groupName}({groupId}) requests one setu. (IsOn = {isOn}, SexyMode = {sexyMode}).",
                 group.Name, group.Identity, white.IsOn, white.SexyMode);
             if (white.IsOn)
@@ -50,14 +50,15 @@ namespace Arcbot.Essential.Units
                     return;
                 }
 
-                SetuArtwork artwork = null;
+                // SetuArtwork artwork = null;
+                string imgUrl = null;
                 var task1 = group.SendPlainAsync("来了来了😜");
                 var task2 = Request(url)
                     .ForJsonResult<JObject>(obj =>
                     {
                         try
                         {
-                            artwork = obj.Value<JArray>("data").FirstOrDefault()?.ToObject<SetuArtwork>();
+                            imgUrl = obj.Value<string>("url");
                         }
                         catch (Exception e)
                         {
@@ -67,12 +68,15 @@ namespace Arcbot.Essential.Units
                     .FetchAsync();
                 await task1;
                 await task2;
-                if (artwork != null)
+                if (imgUrl != null)
                 {
                     var builder = new MessageChainBuilder();
-                    builder.AddImage(new Uri(artwork.Original.Replace("pximg.net", "pixiv.cat"), UriKind.Absolute));
-                    builder.AddPlain(
-                        $"\n[Pixiv]\nArtwork: {artwork.Title}({artwork.Artwork})\nAuthor: {artwork.Author}\nCost: {cost}💰\nUrl: {artwork.Original}\nTags: {string.Join(',', artwork.Tags)}");
+                    // builder.AddImage(new Uri(artwork.Original.Replace("pximg.net", "pixiv.cat"), UriKind.Absolute));
+                    // builder.AddPlain(
+                    //    $"[Pixiv]\nArtwork: {artwork.Title}({artwork.Artwork})\nAuthor: {artwork.Author}\nCost: {cost}💰\nUrl: {artwork.Original}\nTags: {string.Join(',', artwork.Tags)}");
+
+                    builder.AddImage(new Uri(imgUrl, UriKind.Absolute));
+                    builder.AddPlain($"Url: {imgUrl}\nCost: {cost}");
                     _profileService.TakeCoin(member, cost);
                     await group.SendAsync(builder.Build());
                 }
