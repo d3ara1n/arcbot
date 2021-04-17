@@ -16,11 +16,11 @@ namespace Arcbot.Essential.Services
         {
             _repository = repository.Value;
         }
-        public void Add(long groupId,long operatorId,MessageChain trigger, MessageChain reply)
+
+        public void Add(long groupId, long operatorId, MessageChain trigger, MessageChain reply)
         {
             var piece = new GroupReplyPiece()
             {
-                Id = Guid.NewGuid(),
                 CreatedAt = DateTime.Now,
                 GroupId = groupId,
                 OperatorId = operatorId,
@@ -30,13 +30,9 @@ namespace Arcbot.Essential.Services
             _repository.Store(piece);
         }
 
-        public void Remove(Guid id)
+        public void Remove(int id)
         {
-            var obj = _repository.Query<GroupReplyPiece>().Where(x => x.Id == id).FirstOrDefault();
-            if (obj != null)
-            {
-                _repository.Delete<GroupReplyPiece>(obj);
-            }
+            _repository.Delete<GroupReplyPiece>(id);
         }
 
         public IEnumerable<GroupReplyPiece> List(long groupId)
