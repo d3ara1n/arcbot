@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Hyperai.Events;
 using Hyperai.Messages;
 using Hyperai.Messages.ConcreteModels;
+using Hyperai.Messages.ConcreteModels.ImageSources;
 using Hyperai.Relations;
 using Hyperai.Units;
 using Hyperai.Units.Attributes;
@@ -48,7 +49,7 @@ namespace Arcbot.Essential.Units
                     };
                     var content = new MultipartFormDataContent
                     {
-                        {new StreamContent(writer), "file", img.Url.AbsoluteUri}
+                        {new StreamContent(writer), "file", ((UrlSource)img.Source).Url.AbsoluteUri}
                     };
                     var response = await client.PostAsync("search.php?output_type=2&numres=1", content);
                     if (response.IsSuccessStatusCode)
@@ -65,7 +66,7 @@ namespace Arcbot.Essential.Units
                             var url = result["data"]["ext_urls"]?.Values<string>()?.FirstOrDefault() ?? "[NOURL]";
                             var title = result["data"].Value<string>("title") ?? "[UNKNOWN]";
                             var member = result["data"].Value<string>("member_name") ?? "[UNKNOWN]";
-                            builder.AddImage(new Uri(thumbnail));
+                            builder.AddImage(null, new UrlSource(new Uri(thumbnail, UriKind.Absolute)));
                             builder.AddPlain($"([{similarity}%]({title} - {member}: {url})\n");
                         }
 

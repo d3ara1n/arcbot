@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
-        <Version>1.0.13</Version>
+        <Version>1.0.15</Version>
         <Authors>Ac682</Authors>
         <Company>Unicore</Company>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -18,10 +18,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Hyperai.Abstractions" Version="2020.9.19" />
+        <PackageReference Include="Hyperai.Abstractions" Version="2021.4.15.1" />
         <PackageReference Include="Hyperai.Units.Abstractions" Version="2020.9.19" />
-        <PackageReference Include="HyperaiShell.Foundation" Version="2021.3.19" />
-        <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+        <PackageReference Include="HyperaiShell.Foundation" Version="2021.4.15" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="Octokit" Version="0.50.0" />
         <PackageReference Include="Wupoo" Version="1.0.1" />
     </ItemGroup>
