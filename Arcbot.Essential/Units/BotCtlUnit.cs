@@ -36,7 +36,7 @@ namespace Arcbot.Essential.Units
             StringBuilder builder = new();
             builder.AppendLine($"{member.Nickname}({member.Identity})");
             builder.AppendLine($"DisplayName: {member.DisplayName}");
-            builder.AppendLine($"Role: {member.Role.ToString()}");
+            builder.AppendLine($"Role: {member.Role}");
             builder.AppendLine($"Title: {member.Title}");
 
             await group.SendPlainAsync(builder.ToString());
@@ -49,7 +49,7 @@ namespace Arcbot.Essential.Units
         {
             StringBuilder builder = new();
             builder.AppendLine($"{group.Name}({group.Identity})");
-            builder.AppendLine($"Owner: {group.Owner.Value?.DisplayName ?? "(UNDEFINED)"}");
+            builder.AppendLine($"Owner: {group.Owner.Value.DisplayName ?? "(UNDEFINED)"}");
             builder.AppendLine($"Members: {group.Members.Value?.Count()}");
 
             await group.SendPlainAsync(builder.ToString());
