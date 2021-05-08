@@ -67,7 +67,7 @@ namespace Arcbot.Essential.Units
                             var title = result["data"].Value<string>("title") ?? "[UNKNOWN]";
                             var member = result["data"].Value<string>("member_name") ?? "[UNKNOWN]";
                             builder.AddImage(null, new UrlSource(new Uri(thumbnail, UriKind.Absolute)));
-                            builder.AddPlain($"([{similarity}%]({title} - {member}: {url})\n");
+                            builder.AddPlain($"([{similarity}%]({title} - {member}: {url})");
                         }
 
                         var msg = builder.Build();

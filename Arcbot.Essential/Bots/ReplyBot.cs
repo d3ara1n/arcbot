@@ -19,7 +19,7 @@ namespace Arcbot.Essential.Bots
 
         public override void OnGroupMessage(object sender, GroupMessageEventArgs args)
         {
-            var reply = _service.Get(args.Message.AsReadable());
+            var reply = _service.Get(args.Message.AsReadable(), args.Group.Identity);
             if (reply != null)
             {
                 args.Group.SendAsync(reply.Reply.MakeMessageChain()).Wait();

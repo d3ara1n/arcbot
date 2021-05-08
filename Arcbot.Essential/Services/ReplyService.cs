@@ -41,10 +41,10 @@ namespace Arcbot.Essential.Services
             return pieces.ToEnumerable();
         }
 
-        public GroupReplyPiece Get(MessageChain chain)
+        public GroupReplyPiece Get(MessageChain chain, long groupId)
         {
             var msg = chain.Flatten();
-            return _repository.Query<GroupReplyPiece>().Where(x => x.Trigger == msg).FirstOrDefault();
+            return _repository.Query<GroupReplyPiece>().Where(x => x.Trigger == msg && x.GroupId == groupId).FirstOrDefault();
         }
     }
 }

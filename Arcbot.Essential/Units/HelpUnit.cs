@@ -37,15 +37,11 @@ namespace Arcbot.Essential.Units
                     MessageEventType.Stranger => "👤",
                     _ => "👣"
                 };
-
-                StringBuilder sb = new();
-                sb.Append(receStr);
-                sb.Append(' ');
-                sb.AppendLine(extr.RawString);
-                sb.Append(" - ");
-                sb.AppendLine(desc.Description);
-
-                builder.AppendLine(sb.ToString());
+                builder.Append(receStr);
+                builder.Append(' ');
+                builder.AppendLine(extr.RawString);
+                builder.Append(" - ");
+                builder.AppendLine(desc.Description);
             }
 
             return builder.ToString().Trim();

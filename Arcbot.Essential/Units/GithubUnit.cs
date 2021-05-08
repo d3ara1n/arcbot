@@ -1,10 +1,14 @@
+using System;
 using System.ComponentModel;
+using System.Text;
 using System.Threading.Tasks;
 using Hyperai.Events;
 using Hyperai.Messages;
+using Hyperai.Messages.ConcreteModels.ImageSources;
 using Hyperai.Relations;
 using Hyperai.Units;
 using Hyperai.Units.Attributes;
+using HyperaiShell.Foundation.ModelExtensions;
 using Microsoft.Extensions.Logging;
 using Octokit;
 
@@ -21,31 +25,51 @@ namespace Arcbot.Essential.Units
             _client = new GitHubClient(new ProductHeaderValue("Arcbot"));
         }
 
-        // [Receive(MessageEventType.Group)]
+        [Receive(MessageEventType.Group)]
         [Description("看看别人 Github")]
         [Extract("!github {query}")]
         public async Task Query(Group group, string query)
         {
             string owner;
             string name;
-
-            MessageChainBuilder builder = new();
             if (query.Contains('/'))
             {
                 owner = query.Substring(0,query.IndexOf('/'));
                 name = query.Substring(owner.Length + 1);
 
                 var repository = await _client.Repository.Get(owner, name);
+
+                StringBuilder builder = new();
+                if (repository.Archived) builder.Append("[Archived]");
+                builder.AppendLine($"{repository.FullName}");
+                builder.AppendLine($"  --{repository.Description}");
+                builder.AppendLine($"Language: {repository.Language}");
+                builder.AppendLine(
+                    $"Star/Watch/Fork: {repository.StargazersCount}/{repository.WatchersCount}/{repository.ForksCount}");
+                builder.AppendLine($"CreatedAt: {repository.CreatedAt}");
+                builder.AppendLine($"PushedAt: {repository.PushedAt}");
+                builder.AppendLine($"Url: {repository.HtmlUrl}");
+
+                await group.SendPlainAsync(builder.ToString().Trim());
             }
             else
             {
                 owner = query;
 
                 var user = await _client.User.Get(owner);
+
+                MessageChainBuilder chainBuilder = new();
+                StringBuilder builder = new();
+                chainBuilder.AddImage(null, new UrlSource(new Uri(user.AvatarUrl)));
+                builder.AppendLine($"[{user.Login}]{user.Name}");
+                builder.AppendLine($"  --{user.Bio ?? "(NULL)"}");
+                builder.AppendLine($"Email: {user.Email ?? "(NULL)"}");
+                builder.AppendLine($"Followers/Following: {user.Followers}/{user.Following}");
+                builder.AppendLine($"CreatedAt: {user.CreatedAt}");
+                builder.AppendLine($"{user.HtmlUrl}");
+
+                await group.SendPlainAsync(builder.ToString().Trim());
             }
-            
-            
-            //_client.Repository.Get();
         }
     }
 }
