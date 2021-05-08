@@ -61,14 +61,17 @@ namespace Arcbot.Essential.Units
                 MessageChainBuilder chainBuilder = new();
                 StringBuilder builder = new();
                 chainBuilder.AddImage(null, new UrlSource(new Uri(user.AvatarUrl)));
+                
                 builder.AppendLine($"[{user.Login}]{user.Name}");
                 builder.AppendLine($"  --{user.Bio ?? "(NULL)"}");
                 builder.AppendLine($"Email: {user.Email ?? "(NULL)"}");
                 builder.AppendLine($"Followers/Following: {user.Followers}/{user.Following}");
                 builder.AppendLine($"CreatedAt: {user.CreatedAt}");
                 builder.AppendLine($"{user.HtmlUrl}");
+                
+                chainBuilder.AddPlain(builder.ToString().Trim());
 
-                await group.SendPlainAsync(builder.ToString().Trim());
+                await group.SendAsync(chainBuilder.Build());
             }
         }
     }

@@ -11,6 +11,7 @@ namespace Arcbot.Essential.Services
     public class ReplyService
     {
         private readonly IRepository _repository;
+        private readonly Random random = new Random();
 
         public ReplyService(IPluginRepository<PluginEntry> repository)
         {
@@ -44,7 +45,14 @@ namespace Arcbot.Essential.Services
         public GroupReplyPiece Get(MessageChain chain, long groupId)
         {
             var msg = chain.Flatten();
-            return _repository.Query<GroupReplyPiece>().Where(x => x.Trigger == msg && x.GroupId == groupId).FirstOrDefault();
+            var results = _repository.Query<GroupReplyPiece>().Where(x => x.Trigger == msg && x.GroupId == groupId);
+            int count = results.Count();
+            return count switch
+            {
+                1 => results.First(),
+                > 1 => results.Skip(random.Next(count)).First(),
+                _ => null
+            };
         }
     }
 }
