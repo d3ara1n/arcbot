@@ -10,7 +10,7 @@ cp *.nupkg [HyperaiShell/Plugins]
 ```
 打包之后把包复制进 HyperaiShell 的 `plugins` 文件夹就完事了
 
-**需要 Wupoo[https://www.nuget.org/packages/Wupoo/] 包存在于 `plugins` 目录下**
+**需要 [Wupoo](https://www.nuget.org/packages/Wupoo/) 包存在于 `plugins` 目录下**
 
 ## 功能 | Features
 
