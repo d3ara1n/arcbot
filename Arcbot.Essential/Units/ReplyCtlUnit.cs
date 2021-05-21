@@ -24,7 +24,7 @@ namespace Arcbot.Essential.Units
 
         [Receive(MessageEventType.Group)]
         [Description("在群里添加一条消息自动回复规则")]
-        [CheckTicket("reply.control.register")]
+        [RequiredTicket("reply.control.register")]
         [Extract("!reply.add {trigger} {reply}")]
         public async Task Register(Group group, Member member, MessageChain trigger, MessageChain reply)
         {
@@ -48,7 +48,7 @@ namespace Arcbot.Essential.Units
         [Receive(MessageEventType.Group)]
         [Description("移除一条规则")]
         [Extract("!reply.remove {id}")]
-        [CheckTicket("reply.control")]
+        [RequiredTicket("reply.control")]
         public async Task Unregister(Group group, int id)
         {
             _service.Remove(id);
@@ -58,7 +58,7 @@ namespace Arcbot.Essential.Units
         [Receive(MessageEventType.Group)]
         [Description("查询本群的规则")]
         [Extract("!reply.list")]
-        [CheckTicket("reply.control")]
+        [RequiredTicket("reply.control")]
         public async Task List(Group group)
         {
             var list = _service.List(group.Identity);

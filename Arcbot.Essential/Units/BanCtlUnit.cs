@@ -23,7 +23,7 @@ namespace Arcbot.Essential
 
         [Receive(MessageEventType.Group)]
         [Extract("!ban {who} {reason}")]
-        [CheckTicket("blacklist.control.add")]
+        [RequiredTicket("blacklist.control.add")]
         public async Task Ban(Group group, MessageChain who, string reason)
         {
             var at = (At) who.FirstOrDefault(x => x is At);
@@ -36,7 +36,7 @@ namespace Arcbot.Essential
 
         [Receive(MessageEventType.Friend)]
         [Extract("!ban {who} {reason}")]
-        [CheckTicket("blacklist.control.add")]
+        [RequiredTicket("blacklist.control.add")]
         public async Task Ban(Friend friend, long who, string reason)
         {
             _service.Ban(who, reason);
@@ -45,7 +45,7 @@ namespace Arcbot.Essential
 
         [Receive(MessageEventType.Group)]
         [Extract("!deban {who}")]
-        [CheckTicket("blacklist.control.remove")]
+        [RequiredTicket("blacklist.control.remove")]
         public async Task Deban(Group group, MessageChain who)
         {
             var at = (At) who.FirstOrDefault(x => x is At);
@@ -58,7 +58,7 @@ namespace Arcbot.Essential
 
         [Receive(MessageEventType.Friend)]
         [Extract("!deban {who}")]
-        [CheckTicket("blacklist.control.remove")]
+        [RequiredTicket("blacklist.control.remove")]
         public async Task Deban(Friend friend, long who)
         {
             _service.Deban(who);
@@ -67,7 +67,7 @@ namespace Arcbot.Essential
 
         [Receive(MessageEventType.Friend)]
         [Extract("!isbanned {who}")]
-        [CheckTicket("blacklist.control.query")]
+        [RequiredTicket("blacklist.control.query")]
         public async Task Check(Friend friend, long who)
         {
             _ = _service.IsBanned(who, out var reason);
@@ -76,7 +76,7 @@ namespace Arcbot.Essential
 
         [Receive(MessageEventType.Group)]
         [Extract("!isbanned {who}")]
-        [CheckTicket("blacklist.control.query")]
+        [RequiredTicket("blacklist.control.query")]
         public async Task Check(Group group, MessageChain who)
         {
             var at = (At) who.FirstOrDefault(x => x is At);

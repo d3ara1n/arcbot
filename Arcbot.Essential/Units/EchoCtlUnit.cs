@@ -30,7 +30,7 @@ namespace Arcbot.Essential.Units
 
         [Receive(MessageEventType.Group)]
         [Extract("!echo.on")]
-        [CheckTicket("echo.control")]
+        [RequiredTicket("echo.control")]
         [Description("开启回声模式")]
         public async Task EchoOn(Group group)
         {
@@ -49,7 +49,7 @@ namespace Arcbot.Essential.Units
 
         [Receive(MessageEventType.Group)]
         [Extract("!echo.off")]
-        [CheckTicket("echo.control")]
+        [RequiredTicket("echo.control")]
         [Description("关闭回声模式")]
         public async Task EchoOff(Group group)
         {

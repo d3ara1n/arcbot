@@ -29,7 +29,7 @@ namespace Arcbot.Essential.Units
         }
 
         [Receive(MessageEventType.Group)]
-        [CheckTicket("iamgauss")]
+        [RequiredTicket("iamgauss")]
         [Extract("!gauss {who}")]
         public async Task Write(long who, Group group, IApiClient client)
         {

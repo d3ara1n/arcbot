@@ -15,7 +15,7 @@ namespace Arcbot.Essential.Units
     {
         [Receive(MessageEventType.Group)]
         [Extract("!auth.grant.limit {who} {permission} {limit}")]
-        [CheckTicket("whosyourdaddy")]
+        [RequiredTicket("whosyourdaddy")]
         [Description("添加限次权限")]
         public async Task AuthLimited(long who, Group group, string permission, int limit)
         {
@@ -26,7 +26,7 @@ namespace Arcbot.Essential.Units
 
         [Receive(MessageEventType.Group)]
         [Extract("!auth.grant.expiry {who} {permission} {timestamp}")]
-        [CheckTicket("whosyourdaddy")]
+        [RequiredTicket("whosyourdaddy")]
         [Description("添加限时权限")]
         public async Task AuthExpiry(long who, Group group, string permission, long timestamp)
         {
@@ -38,7 +38,7 @@ namespace Arcbot.Essential.Units
 
         [Receive(MessageEventType.Group)]
         [Extract("!auth.grant {who} {permission}")]
-        [CheckTicket("whosyourdaddy")]
+        [RequiredTicket("whosyourdaddy")]
         [Description("添加无限制使用权限")]
         public async Task AuthNormal(long who, Group group, string permission)
         {
@@ -49,7 +49,7 @@ namespace Arcbot.Essential.Units
 
         [Receive(MessageEventType.Group)]
         [Extract("!auth.revoke {who} {permission}")]
-        [CheckTicket("whosyourdaddy")]
+        [RequiredTicket("whosyourdaddy")]
         [Description("撤销权限")]
         public async Task Revoke(long who, Group group, string permission)
         {

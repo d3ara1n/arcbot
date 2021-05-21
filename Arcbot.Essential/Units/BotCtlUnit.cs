@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Hyperai.Events;
 using Hyperai.Messages;
 using Hyperai.Relations;
-using Hyperai.Services;
 using Hyperai.Units;
 using Hyperai.Units.Attributes;
 using HyperaiShell.Foundation.Authorization.Attributes;
@@ -58,21 +57,51 @@ namespace Arcbot.Essential.Units
         [Receive(MessageEventType.Friend)]
         [Extract("!say.friend {id} {message}")]
         [Description("发送给好友一条消息")]
-        [CheckTicket("whosyourdaddy")]
+        [RequiredTicket("whosyourdaddy")]
         public async Task SayF(long id, MessageChain message)
         {
-            var friend = new Friend() {Identity = id};
+            var friend = new Friend() { Identity = id };
             await friend.SendAsync(message);
         }
 
         [Receive(MessageEventType.Friend)]
         [Extract("!say.group {id} {message}")]
         [Description("发送给群一条消息")]
-        [CheckTicket("whosyourdaddy")]
+        [RequiredTicket("whosyourdaddy")]
         public async Task SayG(long id, MessageChain message)
         {
-            var group = new Group() {Identity = id};
+            var group = new Group() { Identity = id };
             await group.SendAsync(message);
+        }
+
+        [Receive(MessageEventType.Friend)]
+        [Extract("!list.friend")]
+        [Description("获取所有好友列表")]
+        [RequiredTicket("whosyourdaddy")]
+        public async Task ListFriends(Friend friend, Self me)
+        {
+            StringBuilder builder = new();
+            int count = 0;
+            foreach (Friend ele in me.Friends.Value)
+            {
+                builder.AppendLine($"[{count++}]{ele.Nickname}({ele.Identity})");
+            }
+            await friend.SendPlainAsync(builder.ToString());
+        }
+
+        [Receive(MessageEventType.Friend)]
+        [Extract("!list.group")]
+        [Description("获取所有好友列表")]
+        [RequiredTicket("whosyourdaddy")]
+        public async Task ListGroup(Friend friend, Self me)
+        {
+            StringBuilder builder = new();
+            int count = 0;
+            foreach (Group ele in me.Groups.Value)
+            {
+                builder.AppendLine($"[{count++}]{ele.Name}({ele.Identity})");
+            }
+            await friend.SendPlainAsync(builder.ToString());
         }
     }
 }
