@@ -64,10 +64,10 @@ namespace Arcbot.Essential.Units
         [Extract("!forward.remove {id}")]
         [Description("移除一条规则")]
         [RequiredTicket("forward.control")]
-        public async Task Remove(Friend friend, int id)
+        public async Task Remove(Group group, int id)
         {
             _repository.Delete<ForwardChannel>(id);
-            await friend.SendPlainAsync("移除了，也许没有，总之它不存在了");
+            await group.SendPlainAsync("移除了，也许没有，总之它不存在了");
         }
     }
 }
