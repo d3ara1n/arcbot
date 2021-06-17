@@ -18,7 +18,7 @@ namespace Arcbot.Essential.Units
             _service = service;
         }
 
-        private string GetHelpText()
+        private string GetHelpText(MessageEventType type)
         {
             var entries = _service.GetEntries();
             StringBuilder builder = new();
@@ -29,8 +29,10 @@ namespace Arcbot.Essential.Units
                 if (desc == null || extr == null) continue;
 
                 var rece = ent.Action.GetCustomAttribute<ReceiveAttribute>();
+                
+                if(rece?.Type != type) continue;
 
-                var receStr = rece.Type switch
+                var receStr = rece?.Type switch
                 {
                     MessageEventType.Friend => "🧑‍🤝‍🧑",
                     MessageEventType.Group => "👪",
@@ -49,10 +51,18 @@ namespace Arcbot.Essential.Units
 
         [Receive(MessageEventType.Group)]
         [Extract("!help")]
-        [Description("得到一份包含所有具有注释的命令集合")]
+        [Description("得到一份包含所有具有注释的群命令集合")]
         public async void Help(Group group)
         {
-            await group.SendPlainAsync(GetHelpText());
+            await group.SendPlainAsync(GetHelpText(MessageEventType.Group));
+        }
+        
+        [Receive(MessageEventType.Friend)]
+        [Extract("!help")]
+        [Description("得到一份包含所有具有注释的好友命令集合")]
+        public async void Help(Friend friend)
+        {
+            await friend.SendPlainAsync(GetHelpText(MessageEventType.Friend));
         }
     }
 }

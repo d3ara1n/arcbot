@@ -15,6 +15,7 @@ cp *.nupkg [HyperaiShell/Plugins]
 **需要以下包同时存在于 `plugins` 目录下。**
 - [octokit](https://www.nuget.org/packages/octokit/)
 - [Wupoo](https://www.nuget.org/packages/Wupoo/)
+- [SauceNET](https://www.nuget.org/packages/SauceNET/)
 
 ## 功能 | Features
 

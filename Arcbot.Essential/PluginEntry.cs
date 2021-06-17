@@ -13,6 +13,7 @@ namespace Arcbot.Essential
         {
             bots.Add<EchoBot>();
             bots.Add<ReplyBot>();
+            bots.Add<ForwardBot>();
         }
 
         public override void ConfigureServices(IServiceCollection services)

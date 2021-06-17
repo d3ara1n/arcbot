@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Hyperai.Events;
 using Hyperai.Messages;
+using Hyperai.Messages.ConcreteModels;
 using Hyperai.Messages.ConcreteModels.ImageSources;
 using Hyperai.Relations;
 using Hyperai.Units;
@@ -27,7 +28,7 @@ namespace Arcbot.Essential.Units
 
         [Receive(MessageEventType.Group)]
         [Description("看看别人 Github")]
-        [Extract("!github {query}")]
+        [Extract("!github.detailed {query}")]
         public async Task Query(Group group, string query)
         {
             string owner;
@@ -48,7 +49,7 @@ namespace Arcbot.Essential.Units
                     $"Star/Watch/Fork: {repository.StargazersCount}/{repository.WatchersCount}/{repository.ForksCount}");
                 builder.AppendLine($"CreatedAt: {repository.CreatedAt}");
                 builder.AppendLine($"PushedAt: {repository.PushedAt}");
-                builder.AppendLine($"Url: {repository.HtmlUrl}");
+                builder.Append($"Url: {repository.HtmlUrl}");
 
                 await group.SendPlainAsync(builder.ToString().Trim());
             }
@@ -73,6 +74,16 @@ namespace Arcbot.Essential.Units
 
                 await group.SendAsync(chainBuilder.Build());
             }
+        }
+        
+        [Receive(MessageEventType.Group)]
+        [Extract("!github {query}")]
+        [Description("获取仓库的图片描述")]
+        public async Task Github(Group group, string query)
+        {
+            MessageChain chain = MessageChain.Construct(new Image(null,
+                new UrlSource(new Uri($"https://opengraph.githubassets.com/0/{query}"))));
+            await group.SendAsync(chain);
         }
     }
 }

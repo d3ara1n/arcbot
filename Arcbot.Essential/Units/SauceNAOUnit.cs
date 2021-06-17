@@ -21,7 +21,7 @@ namespace Arcbot.Essential.Units
     public class SauceNAOUnit : UnitBase
     {
         [Receive(MessageEventType.Group)]
-        [Extract("*!sauce", true)]
+        [Extract("[hyper.quote({id})][hyper.at({user})] !sauce", true)]
         [Description("用 SauceNAO 搜索图片出处")]
         public async Task GetSauce(Group group, MessageChain raw, Member sender)
         {
