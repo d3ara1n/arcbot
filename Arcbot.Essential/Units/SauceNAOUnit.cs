@@ -14,6 +14,7 @@ using Hyperai.Units.Attributes;
 using HyperaiShell.Foundation.ModelExtensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SauceNET;
 
 namespace Arcbot.Essential.Units
 {
@@ -31,48 +32,25 @@ namespace Arcbot.Essential.Units
                 img = (ImageBase) source.FirstOrDefault(x => x is ImageBase);
             }
 
-            if (img != null)
+            if (img != null && img.Source is UrlSource)
             {
                 await group.SendPlainAsync("在找了在找了😚");
+
+                SauceNETClient client = new("653f4b7eb41179c20dc473f3500005fbad22ab3e");
                 try
                 {
-                    using MemoryStream writer = new();
-                    using (var reader = img.OpenRead())
-                    {
-                        reader.CopyTo(writer);
-                        writer.Position = 0;
-                    }
+                    var results = await client.GetSauceAsync(((UrlSource) img.Source).Url.AbsoluteUri, "999", "3");
+                    var builder = raw.CanBeReplied() ? raw.MakeReply() : new MessageChainBuilder();
+                    builder.Add(new At(sender.Identity));
+                    builder.AddPlain("来啦来啦😘");
 
-                    var client = new HttpClient
+                    foreach (var result in results.Results)
                     {
-                        BaseAddress = new Uri("https://saucenao.com/")
-                    };
-                    var content = new MultipartFormDataContent
-                    {
-                        {new StreamContent(writer), "file", ((UrlSource)img.Source).Url.AbsoluteUri}
-                    };
-                    var response = await client.PostAsync("search.php?output_type=2&numres=1", content);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var json = await response.Content.ReadAsStringAsync();
-                        var builder = raw.CanBeReplied() ? raw.MakeReply() : new MessageChainBuilder();
-                        builder.Add(new At(sender.Identity));
-                        builder.AddPlain("来啦来啦😘");
-                        var obj = JsonConvert.DeserializeObject<JObject>(json);
-                        foreach (var result in obj.Value<JArray>("results"))
-                        {
-                            var thumbnail = result["header"].Value<string>("thumbnail");
-                            var similarity = result["header"].Value<string>("similarity");
-                            var url = result["data"]["ext_urls"]?.Values<string>()?.FirstOrDefault() ?? "[NOURL]";
-                            var title = result["data"].Value<string>("title") ?? "[UNKNOWN]";
-                            var member = result["data"].Value<string>("member_name") ?? "[UNKNOWN]";
-                            builder.AddImage(null, new UrlSource(new Uri(thumbnail, UriKind.Absolute)));
-                            builder.AddPlain($"([{similarity}%]({title} - {member}: {url})");
-                        }
-
-                        var msg = builder.Build();
-                        await group.SendAsync(msg);
+                        builder.AddImage(null, new UrlSource(new Uri(result.ThumbnailURL, UriKind.Absolute)));
+                        builder.AddPlain($"{result.Name}[{result.Similarity}]\n{result.SourceURL}\n");
                     }
+                    
+                    await group.SendAsync(builder.Build());
                 }
                 catch
                 {

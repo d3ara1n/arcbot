@@ -103,5 +103,28 @@ namespace Arcbot.Essential.Units
             }
             await friend.SendPlainAsync(builder.ToString());
         }
+
+
+        [Receive(MessageEventType.Group)]
+        [Extract("[hyper.quote({id})][hyper.at({qq})] !revoke")]
+        [Description("撤回自己的消息或在群里撤回别人的消息")]
+        [RequiredTicket("whosyourdaddy")]
+        public async Task Revoke(Group group, MessageChain chain)
+        {
+            MessageChain raw = await chain.OfMessageRepliedByAsync();
+            if (raw != null)
+            {
+                await raw.RevokeAsync();
+            }
+        }
+
+        [Receive(MessageEventType.Group)]
+        [Extract("[hyper.quote({id})][hyper.at({qq})] !raw")]
+        [Description("查看一条消息的 hypercode 表示")]
+        public async Task Raw(Group group, MessageChain chain)
+        {
+            MessageChain raw = await chain.OfMessageRepliedByAsync();
+            await group.SendPlainAsync(raw?.Flatten() ?? "没有哦");
+        }
     }
 }
