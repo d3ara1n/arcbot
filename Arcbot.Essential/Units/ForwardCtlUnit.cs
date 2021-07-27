@@ -30,7 +30,7 @@ namespace Arcbot.Essential.Units
         [RequiredTicket("forward.control")]
         public async Task TrackGroup(Group group, long dest)
         {
-            _repository.Store(new ForwardChannel(RelationMatcher.FromGroup(group.Identity),dest, MessageEventType.Group));
+            _repository.Store(new ForwardChannel(Signature.FromGroup(group.Identity),dest, MessageEventType.Group));
             await group.SendPlainAsync($"转发本群消息到群 {dest}");
         }
 
@@ -40,8 +40,28 @@ namespace Arcbot.Essential.Units
         [RequiredTicket("forward.control")]
         public async Task TrackGroup(Group group, Member sender)
         {
-            _repository.Store(new ForwardChannel(RelationMatcher.FromGroup(group.Identity), sender.Identity, MessageEventType.Friend));
+            _repository.Store(new ForwardChannel(Signature.FromGroup(group.Identity), sender.Identity, MessageEventType.Friend));
             await group.SendPlainAsync($"转发本群消息到好友 {sender.Nickname}");
+        }
+
+        [Receive(MessageEventType.Friend)]
+        [Extract("!forward.add {expr}")]
+        [Description("将消息转发给自己")]
+        [RequiredTicket("forward.control")]
+        public async Task Forward(Friend friend, string expr)
+        {
+            _repository.Store(new ForwardChannel(new Signature(expr), friend.Identity, MessageEventType.Friend));
+            await friend.SendPlainAsync($"转发 {expr} 到你");
+        }
+
+        [Receive(MessageEventType.Group)]
+        [Extract("!forward.add {expr}")]
+        [Description("将消息转发到本群")]
+        [RequiredTicket("forward.control")]
+        public async Task Forward(Group group, string expr)
+        {
+            _repository.Store(new ForwardChannel(new Signature(expr), group.Identity, MessageEventType.Friend));
+            await group.SendPlainAsync($"转发 {expr} 到本群");
         }
 
         [Receive(MessageEventType.Group)]
