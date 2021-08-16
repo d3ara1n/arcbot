@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Hyperai.Events;
 using Hyperai.Messages;
 using Hyperai.Messages.ConcreteModels;
-using Hyperai.Messages.ConcreteModels.ImageSources;
+using Hyperai.Messages.ConcreteModels.FileSources;
 using Hyperai.Relations;
 using Hyperai.Units;
 using Hyperai.Units.Attributes;

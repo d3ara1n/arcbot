@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arcbot.Essential", "Arcbot.Essential\Arcbot.Essential.csproj", "{F5A4B811-0B72-43EE-9EA8-27E07075B3C1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arcbot.ClassTable", "Arcbot.ClassTable\Arcbot.ClassTable.csproj", "{F7121E73-FA88-4957-AF4F-1E8A4EB842F7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{F5A4B811-0B72-43EE-9EA8-27E07075B3C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5A4B811-0B72-43EE-9EA8-27E07075B3C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5A4B811-0B72-43EE-9EA8-27E07075B3C1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F7121E73-FA88-4957-AF4F-1E8A4EB842F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F7121E73-FA88-4957-AF4F-1E8A4EB842F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F7121E73-FA88-4957-AF4F-1E8A4EB842F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F7121E73-FA88-4957-AF4F-1E8A4EB842F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

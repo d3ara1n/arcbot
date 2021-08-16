@@ -15,12 +15,18 @@ namespace Arcbot.Essential.Units
 {
     public class ReminderUnit : UnitBase
     {
+        private readonly IBackgroundJobClient _jobClient;
+        public ReminderUnit(IBackgroundJobClient jobClient)
+        {
+            _jobClient = jobClient;
+        }
+
         [Receive(MessageEventType.Friend)]
         [Description("在指定日期发送预设好的消息")]
         [Extract("!reminder {dateTime} {message}")]
         public async Task RemindMe(Friend friend, DateTime dateTime, MessageChain message)
         {
-            BackgroundJob.Schedule(() => friend.SendAsync(message), dateTime);
+            _jobClient.Schedule(() => SendToFriend(friend.Identity, message), dateTime);
             await friend.SendPlainAsync($"任务时间被设定在了{dateTime},距离现在还有{CalcDateTime(dateTime)}");
         }
 
@@ -30,7 +36,7 @@ namespace Arcbot.Essential.Units
         [RequiredTicket("reminder.schedule")]
         public async Task RemindMe(Group group, Member member, DateTime dateTime, MessageChain message)
         {
-            BackgroundJob.Schedule(() => group.SendAsync(message), dateTime);
+            _jobClient.Schedule(() => SendToGroup(group.Identity, message), dateTime);
             await group.SendPlainAsync($"任务时间被设定在了{dateTime},距离现在还有{CalcDateTime(dateTime)}");
         }
 
@@ -46,6 +52,18 @@ namespace Arcbot.Essential.Units
             sb.Append($"{delta.Hours}小时{delta.Minutes}分{delta.Seconds}秒");
 
             return sb.ToString();
+        }
+
+        public void SendToFriend(long id, MessageChain chain)
+        {
+            var friend = new Friend() { Identity = id };
+            friend.SendAsync(chain).Wait();
+        }
+
+        public void SendToGroup(long id, MessageChain chain)
+        {
+            var group = new Group() { Identity = id };
+            group.SendAsync(chain).Wait();
         }
     }
 }
