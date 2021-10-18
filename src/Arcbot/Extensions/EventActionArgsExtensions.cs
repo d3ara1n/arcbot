@@ -1,0 +1,56 @@
+using System;
+using HyperaiX.Abstractions.Actions;
+using HyperaiX.Abstractions.Events;
+using HyperaiX.Abstractions.Relations;
+using Onebot.Protocol.Models.Actions;
+using Onebot.Protocol.Models.Events;
+
+namespace Arcbot.Extensions
+{
+    public static class EventActionArgsExtensions
+    {
+        public static GenericEventArgs ToEventArgs(this IEvent evt) => evt switch
+        {
+            FriendMessageEvent it => new FriendMessageEventArgs()
+            {
+                Sender = new Friend()
+                {
+                    Identity = it.UserId,
+                    Nickname = it.Sender.NickName,
+                    Remark = null
+                },
+                Message = it.Message.ToMessageChain()
+            },
+            GroupMessageEvent it => new GroupMessageEventArgs()
+            {
+                Group = new Group()
+                {
+                    Identity = it.GroupId,
+                },
+                Message = it.Message.ToMessageChain(),
+                Sender = new Member()
+                {
+                    DisplayName = it.Sender.NickName,
+                    GroupIdentity = it.GroupId,
+                    Identity = it.UserId,
+                    Role = it.Sender.Role.ToRole()
+                },
+            },
+            HeartbeatEvent it => new UnknownEventArgs()
+            {
+                Data = it
+            },
+            ConnectEvent it => new UnknownEventArgs()
+            {
+                Data = it
+            }
+        };
+
+
+        public static IAction ToAction(this GenericActionArgs action) => action switch
+        {
+            FriendMessageActionArgs it => new FriendMessageAction(it.FriendId, it.Message.ToMessage()),
+            GroupMessageActionArgs it => new GroupMessageAction(it.GroupId, it.Message.ToMessage())
+        };
+    }
+}
