@@ -19,10 +19,10 @@ namespace Arcbot.Extensions
                     "text" => new Plain(x.Data["text"]),
                     "face" => new Face(Convert.ToInt32(x.Data["id"])),
                     "image" => x.Data.ContainsKey("type")
-                        ? new Flash(new Uri(x.Data["file"]))
-                        : new Image(new Uri(x.Data["file"])),
-                    "record" => new Audio(new Uri(x.Data["file"])),
-                    "video" => new Video(new Uri(x.Data["file"])),
+                        ? new Flash(new Uri(x.Data["url"]))
+                        : new Image(new Uri(x.Data["url"])),
+                    "record" => new Audio(new Uri(x.Data["url"])),
+                    "video" => new Video(new Uri(x.Data["url"])),
                     "at" => x.Data["qq"] switch
                     {
                         "all" => new AtAll(),
