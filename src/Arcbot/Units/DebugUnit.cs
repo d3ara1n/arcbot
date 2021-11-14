@@ -32,6 +32,7 @@ namespace Arcbot.Units
         // MessageChain
         // MessageChainBuilder
         // IEnumerable<MessageElement> = MessageChain
+        // NOT SUPPORTED
         [Receiver(MessageEventType.Group)]
         [Command("version")]
         public MessageChain Version()
