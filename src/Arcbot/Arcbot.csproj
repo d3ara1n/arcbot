@@ -2,23 +2,17 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="Ac682.Extensions.Logging.Console" Version="0.4.3" />
       <PackageReference Include="Alexinea.Extensions.Configuration.Toml" Version="5.0.0" />
       <PackageReference Include="Alexinea.Extensions.Configuration.Toml" Version="5.0.0" />
-      <!-- <PackageReference Include="HyperaiX" Version="0.5.1" />
-      <PackageReference Include="HyperaiX.Abstractions" Version="0.5.1" />
-       <PackageReference Include="Onebot.Protocol" Version="1.1.0" />  -->
-      <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\..\HyperaiX\src\HyperaiX.Abstractions\HyperaiX.Abstractions.csproj" />
-      <ProjectReference Include="..\..\..\HyperaiX\src\HyperaiX\HyperaiX.csproj" />
-      <ProjectReference Include="..\..\..\Onebot\src\Onebot.Protocol\Onebot.Protocol.csproj" />
+      <PackageReference Include="HyperaiX" Version="0.6.0" />
+      <PackageReference Include="HyperaiX.Abstractions" Version="0.6.0" />
+       <PackageReference Include="Onebot.Protocol" Version="1.2.0" />
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
     </ItemGroup>
 
 </Project>

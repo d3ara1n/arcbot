@@ -8,8 +8,8 @@ namespace Arcbot.Logging.Formatters
     {
         public string Format(object obj, Type type, string format = null) => obj switch
         {
-            GroupMessageEventArgs it => $"G | Group = {it.Group.Name} Sender = {it.Sender.DisplayName}\n{it.Message}",
-            FriendMessageEventArgs it => $"F | Sender = {it.Sender.Nickname}\n{it.Message}",
+            GroupMessageEventArgs it => $"G | Group = {it.Group.Name} Sender = {it.Sender.DisplayName}\n{it.Message.Flatten()}",
+            FriendMessageEventArgs it => $"F | Sender = {it.Sender.Nickname}\n{it.Message.Flatten()}",
             _ => obj.ToString()
         };
 

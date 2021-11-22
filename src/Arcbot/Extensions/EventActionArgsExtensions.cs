@@ -16,7 +16,7 @@ namespace Arcbot.Extensions
                 Sender = new Friend()
                 {
                     Identity = it.UserId,
-                    Nickname = it.Sender.NickName,
+                    Nickname = it.Sender.Nickname,
                     Remark = null
                 },
                 Message = it.Message.ToMessageChain()
@@ -30,7 +30,7 @@ namespace Arcbot.Extensions
                 Message = it.Message.ToMessageChain(),
                 Sender = new Member()
                 {
-                    DisplayName = it.Sender.NickName,
+                    DisplayName = it.Sender.Nickname,
                     GroupIdentity = it.GroupId,
                     Identity = it.UserId,
                     Role = it.Sender.Role.ToRole()
@@ -41,6 +41,10 @@ namespace Arcbot.Extensions
                 Data = it
             },
             ConnectEvent it => new UnknownEventArgs()
+            {
+                Data = it
+            },
+            UnknownEvent it => new UnknownEventArgs()
             {
                 Data = it
             }

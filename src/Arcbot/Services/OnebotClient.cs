@@ -31,12 +31,12 @@ namespace Arcbot.Services
 
         public GenericEventArgs Read()
         {
-            return socket.ReadAsync(CancellationToken.None).GetAwaiter().GetResult().ToEventArgs();
+            return socket.Read(CancellationToken.None).ToEventArgs();
         }
 
         public GenericReceipt Write(GenericActionArgs action)
         {
-            return socket.WriteAsync(action.ToAction()).GetAwaiter().GetResult().ToReceipt();
+            return socket.Write(action.ToAction(), CancellationToken.None).ToReceipt();
         }
     }
 }
