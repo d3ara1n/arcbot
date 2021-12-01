@@ -54,7 +54,10 @@ namespace Arcbot.Extensions
         public static IAction ToAction(this GenericActionArgs action) => action switch
         {
             FriendMessageActionArgs it => new FriendMessageAction(it.FriendId, it.Message.ToMessage()),
-            GroupMessageActionArgs it => new GroupMessageAction(it.GroupId, it.Message.ToMessage())
+            GroupMessageActionArgs it => new GroupMessageAction(it.GroupId, it.Message.ToMessage()),
+            QueryGroupActionArgs it => new QueryGroupAction(it.GroupId),
+            QueryMemberActionArgs it => new QueryMemberAction(it.GroupId, it.MemberId),
+            QueryFriendActionArgs it => throw new NotImplementedException()
         };
     }
 }

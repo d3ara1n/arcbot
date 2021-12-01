@@ -19,7 +19,19 @@ namespace Arcbot
             builder.Use((evt, pvd, nxt) =>  
             {
                 var logger = pvd.GetRequiredService<ILogger<HyperaiXConfigurationBuilder>>();
-                logger.LogInformation("{}", evt);
+                switch (evt)
+                {
+                    case FriendMessageEventArgs it:
+                    {
+                        logger.LogInformation("F | Friend = {FName}({FId})\n{Message}", it.Sender.Nickname, it.Sender.Identity, it.Message);
+                        break;
+                    }
+                    case GroupMessageEventArgs it:
+                    {
+                        logger.LogInformation("G | Group={GName}({GId}) Member={MName}({MId})\n{Message}", it.Group.Name, it.Group.Identity, it.Sender.DisplayName, it.Sender.Identity, it.Message);
+                        break;
+                    }
+                }
                 nxt(evt, pvd);
             });
     }

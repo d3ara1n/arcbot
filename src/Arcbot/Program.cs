@@ -24,7 +24,7 @@ namespace Arcbot
                     .AddLogging(builder => builder
                         .ClearProviders()
                         .AddConsole(configure => configure
-                            .AddFormatter<EventFormatter>()
+                            .AddFormatter<MessageElementFormatter>()
                             .AddBuiltinFormatters()))
                     .AddOnebot(context.Configuration.GetSection("Onebot"))
                     .AddHyperaiX(configure => configure

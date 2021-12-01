@@ -1,3 +1,6 @@
+using System;
+using System.Buffers.Text;
+using System.IO;
 using System.Threading.Tasks;
 using HyperaiX.Abstractions;
 using HyperaiX.Abstractions.Messages;
@@ -5,25 +8,18 @@ using HyperaiX.Abstractions.Messages.ConcreteModels;
 using HyperaiX.Abstractions.Relations;
 using HyperaiX.Units;
 using HyperaiX.Units.Attributes;
+using Image = HyperaiX.Abstractions.Messages.ConcreteModels.Image;
 
 namespace Arcbot.Units
 {
     public class DebugUnit : UnitBase
     {
 
-        [Receiver(MessageEventType.Group)]
+        [Receiver(MessageEventType.Group | MessageEventType.Friend)]
         [Handler("!ping")]
-        public async Task PingAsync(Group group)
+        public string Ping()
         {
-            await SendGroupMessageAsync(group.Identity, MessageChain.Construct(new Plain("pong!")));
-        }
-
-        [Receiver(MessageEventType.Friend)]
-        [Command("echo")]
-        [Option("message", 'm', "message")]
-        public async Task EchoAsync(Friend friend, MessageChain message)
-        {
-            await SendFriendMessageAsync(friend.Identity, message);
+            return "pong!";
         }
 
         // 返回值可以是
@@ -33,20 +29,27 @@ namespace Arcbot.Units
         // MessageChainBuilder
         // IEnumerable<MessageElement> = MessageChain
         // NOT SUPPORTED
-        [Receiver(MessageEventType.Group)]
-        [Command("version")]
+        [Receiver(MessageEventType.Group | MessageEventType.Friend)]
+        [Handler("!version")]
         public MessageChain Version()
         {
             return MessageChain.Construct(new Plain("IDK"));
         }
         
-        [Receiver(MessageEventType.Group)]
+        [Receiver(MessageEventType.Group | MessageEventType.Friend)]
         [Handler("!reply {image:Image}")]
-        public async Task ReplyImageAsync(Group group, Image image, MessageChain chain)
+        public async Task ReplyImageAsync(Image image, MessageChain chain)
         {
             var builder = chain.CanBeReplied() ? chain.MakeReply() : new MessageChainBuilder();
             builder.Add(image);
-            await SendGroupMessageAsync(group.Identity, builder.Build());
+            await Context.SendMessageAsync(builder.Build());
+        }
+
+        [Receiver(MessageEventType.Group | MessageEventType.Friend)]
+        [Handler("{owner}/{repo}")]
+        public Image Github(string owner, string repo)
+        {
+            return new Image(new Uri($"https://opengraph.githubassets.com/0/{owner}/{repo}"));
         }
     }
 }
