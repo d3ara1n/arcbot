@@ -35,21 +35,19 @@ namespace Arcbot.Units
         {
             return MessageChain.Construct(new Plain("IDK"));
         }
-        
-        [Receiver(MessageEventType.Group | MessageEventType.Friend)]
-        [Handler("!reply {image:Image}")]
-        public async Task ReplyImageAsync(Image image, MessageChain chain)
-        {
-            var builder = chain.CanBeReplied() ? chain.MakeReply() : new MessageChainBuilder();
-            builder.Add(image);
-            await Context.SendMessageAsync(builder.Build());
-        }
 
         [Receiver(MessageEventType.Group | MessageEventType.Friend)]
-        [Handler("{owner}/{repo}")]
+        [RegexAttribte(@"^http[s]?:\/\/github.com\/(?<owner>[a-zA-Z0-9_]+)\/(?<repo>[a-zA-Z0-9_]+)$")]
         public Image Github(string owner, string repo)
         {
             return new Image(new Uri($"https://opengraph.githubassets.com/0/{owner}/{repo}"));
+        }
+
+        [Receiver(MessageEventType.Group| MessageEventType.Friend)]
+        [Handler("hal/{chain}")]
+        public MessageChain Hal(MessageChain chain)
+        {
+            return chain;
         }
     }
 }
