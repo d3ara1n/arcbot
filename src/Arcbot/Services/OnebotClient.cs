@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Arcbot.Extensions;
@@ -36,7 +37,9 @@ namespace Arcbot.Services
 
         public GenericReceipt Write(GenericActionArgs action)
         {
-            return socket.Write(action.ToAction(), CancellationToken.None).ToReceipt();
+            _logger.LogDebug("Write Operation: {Action}", action.ToAction());
+            var source = new CancellationTokenSource(TimeSpan.FromSeconds(3));
+            return socket.Write(action.ToAction(), source.Token).ToReceipt();
         }
     }
 }

@@ -9,6 +9,9 @@ namespace Arcbot.Services
     {
         public static IServiceCollection AddOnebot(this IServiceCollection services, IConfiguration section) => services
             .Configure<OnebotClientOptions>(section)
-            .AddSingleton<IApiClient,OnebotClient>();
+            .AddSingleton<IApiClient, OnebotClient>();
+
+        public static IServiceCollection AddOnebot(this IServiceCollection services) => services
+            .AddSingleton<IApiClient, OnebotClient>();
     }
 }

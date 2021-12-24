@@ -47,7 +47,8 @@ namespace Arcbot.Extensions
                     Role = GroupRole.Member,
                     Title = it.Title
                 }
-            }
+            },
+            null => null
         };
     }
 }
