@@ -1,0 +1,6 @@
+[submodule "submodules/HyperaiX"]
+	path = submodules/HyperaiX
+	url = git@github.com:theGravityLab/HyperaiX
+[submodule "submodules/Onebot"]
+	path = submodules/Onebot
+	url = git@github.com:theGravityLab/Onebot.Net

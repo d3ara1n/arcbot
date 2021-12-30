@@ -33,7 +33,8 @@ Host.CreateDefaultBuilder(args)
             q.UseInMemoryStore();
         }).Configure<QuartzOptions>(context.Configuration.GetSection("Quartz"))
         .AddQuartzHostedService()
-        .Configure<QuartzHostedServiceOptions>(context.Configuration.GetSection("QuartzService")))
+        .Configure<QuartzHostedServiceOptions>(context.Configuration.GetSection("QuartzService"))
+        .AddSingleton<SelfStore>())
     .UseConsoleLifetime()
     .Build()
     .Run();

@@ -32,7 +32,11 @@ namespace Arcbot.Services
 
         public GenericEventArgs Read()
         {
-            return socket.Read(CancellationToken.None).ToEventArgs();
+            return socket.Read(CancellationToken.None).ToEventArgs() switch
+            {
+                // apply Group info to GroupRelatedEventArgs
+                GenericEventArgs it => it,
+            };
         }
 
         public GenericReceipt Write(GenericActionArgs action)

@@ -35,14 +35,22 @@ namespace Arcbot.Extensions
         public static IEnumerable<MessageCell> ToMessage(this MessageChain chain) => chain.Select(x => x switch
         {
             Plain plain => new MessageCell()
-            { Type = "text", Data = new Dictionary<string, string>() { { "text", plain.Text } } },
+                { Type = "text", Data = new Dictionary<string, string>() { { "text", plain.Text } } },
             Image image => new MessageCell()
-            { Type = "image", Data = new Dictionary<string, string>() { { "file", image.Source.AbsoluteUri } } },
+            {
+                Type = "image",
+                Data = new Dictionary<string, string>()
+                    { { "url", image.Source.AbsoluteUri }, { "file", image.Source.AbsoluteUri } }
+            },
             Flash flash => new MessageCell()
-            { Type = "image", Data = new Dictionary<string, string>() { { "file", flash.Source.AbsoluteUri }, { "type", "flash" } } },
+            {
+                Type = "image",
+                Data = new Dictionary<string, string>()
+                    { { "url", flash.Source.AbsoluteUri }, { "file", flash.Source.AbsoluteUri }, { "type", "flash" } }
+            },
             //TODO: complete all
             _ => new MessageCell()
-            { Type = "unknown", Data = new Dictionary<string,string>()}
+                { Type = "unknown", Data = new Dictionary<string, string>() }
         });
     }
 }

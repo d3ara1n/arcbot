@@ -27,7 +27,7 @@ namespace Arcbot.Extensions
                     Owner = new Lazy<Member>( () => null)
                 },
             },
-            QueryMemberReceipt it => new H.QueryMemberReceipt()
+            O.QueryMemberReceipt it => new H.QueryMemberReceipt()
             {
                 Group = new()
                 {
