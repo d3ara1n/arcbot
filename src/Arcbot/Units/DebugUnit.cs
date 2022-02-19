@@ -27,20 +27,6 @@ namespace Arcbot.Units
         [Handler("!ping")]
         public string Ping()
         {
-            var job = JobBuilder.Create<HelloJob>()
-                .WithIdentity("SayHello")
-                .UsingJobData("IsGroup", Context.Group != null)
-                .UsingJobData("Group", Context.Group != null ? Context.Group.Identity : 0)
-                .UsingJobData("User", Context.Sender.Identity)
-                .Build();
-
-            var trigger = TriggerBuilder.Create()
-                .WithIdentity("PingTrigger")
-                .StartAt(DateTime.Now + TimeSpan.FromSeconds(15))
-                .Build();
-
-
-            _schedulerFactory.GetScheduler().GetAwaiter().GetResult().ScheduleJob(job, trigger);
             return "pong!";
         }
         

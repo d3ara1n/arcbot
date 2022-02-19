@@ -1,4 +1,5 @@
 using System;
+using HyperaiX;
 using HyperaiX.Abstractions.Actions;
 using HyperaiX.Abstractions.Events;
 using HyperaiX.Abstractions.Relations;
@@ -9,7 +10,7 @@ namespace Arcbot.Extensions
 {
     public static class EventActionArgsExtensions
     {
-        public static GenericEventArgs ToEventArgs(this IEvent evt) => evt switch
+        public static GenericEventArgs ToEventArgs(this IEvent evt, IApiClient client) => evt switch
         {
             FriendMessageEvent it => new FriendMessageEventArgs()
             {
@@ -23,10 +24,7 @@ namespace Arcbot.Extensions
             },
             GroupMessageEvent it => new GroupMessageEventArgs()
             {
-                Group = new Group()
-                {
-                    Identity = it.GroupId,
-                },
+                Group = client.GetGroupInfoAsync(it.GroupId).GetAwaiter().GetResult() ?? new Group() { Identity = it.GroupId },
                 Message = it.Message.ToMessageChain(),
                 Sender = new Member()
                 {
@@ -57,7 +55,8 @@ namespace Arcbot.Extensions
             GroupMessageActionArgs it => new GroupMessageAction(it.GroupId, it.Message.ToMessage()),
             QueryGroupActionArgs it => new QueryGroupAction(it.GroupId),
             QueryMemberActionArgs it => new QueryMemberAction(it.GroupId, it.MemberId),
-            QueryFriendActionArgs it => throw new NotImplementedException()
+            QueryFriendActionArgs it => throw new NotImplementedException(),
+            _ => null,
         };
     }
 }
