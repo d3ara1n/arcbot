@@ -1,7 +1,10 @@
 using HyperaiX;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Onebot.Protocol.Communications;
+using Sora.Interfaces;
+using Sora.Net;
+using Sora.Net.Config;
+using Sora.OnebotModel;
 
 namespace Arcbot.Services
 {
@@ -13,5 +16,14 @@ namespace Arcbot.Services
 
         public static IServiceCollection AddOnebot(this IServiceCollection services) => services
             .AddSingleton<IApiClient, OnebotClient>();
+
+        public static IServiceCollection AddSora(this IServiceCollection services, IConfiguration section) => services
+            .AddHostedService<SoraServer>()
+            .AddSingleton<ISoraConfig, ClientConfig>((provider) => {
+                var instance = new ClientConfig();
+                section.Bind(instance);
+                return instance;
+            });
+
     }
 }
