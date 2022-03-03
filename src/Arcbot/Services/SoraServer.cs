@@ -30,6 +30,7 @@ public class SoraServer : IHostedService
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
+        _client.exiting = true;
         ((IDisposable)service)?.Dispose();
         return Task.CompletedTask;
     }

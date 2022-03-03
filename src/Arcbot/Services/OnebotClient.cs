@@ -37,6 +37,7 @@ namespace Arcbot.Services
         
         private SoraApi context;
 
+        internal bool exiting = false;
 
         public OnebotClient(IOptions<OnebotClientOptions> options, ILogger<OnebotClient> logger)
         {
@@ -47,11 +48,12 @@ namespace Arcbot.Services
         public HE.GenericEventArgs Read()
         {
             // server runs at single thread, no need thread safety
-            while (events.Count == 0)
+            while (events.Count == 0 && !exiting)
             {
                 Thread.Sleep(300);
             }
 
+            if(exiting) return null; //TODO: replaced with ConnectionClosedEventArgs
             var evt = events.Dequeue();
             context = evt.SoraApi;
             return CastEvent(evt);
