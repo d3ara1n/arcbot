@@ -159,7 +159,8 @@ namespace Arcbot.Services
                     SM.AtSegment it when it.Target == null => new HM.AtAll(),
                     SM.AtSegment it when it.Target != null => new HM.At(long.Parse(it.Target)),
                     SM.FaceSegment it => new HM.Face(it.Id),
-                    SM.ReplySegment it => new HM.Quote(it.Target)
+                    SM.ReplySegment it => new HM.Quote(it.Target),
+                    _ => null
                 });
             }
             return builder.Build();
