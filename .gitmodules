@@ -4,3 +4,6 @@
 [submodule "submodules/Onebot"]
 	path = submodules/Onebot
 	url = git@github.com:theGravityLab/Onebot.Net
+[submodule "submodules/duffet"]
+	path = submodules/duffet
+	url = git@github.com:ac682/duffet
