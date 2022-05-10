@@ -32,7 +32,7 @@ namespace Arcbot.Units
         {
             return "pong!";
         }
-        
+
         [Receiver(MessageEventType.Group | MessageEventType.Friend)]
         [Extract("!version")]
         public MessageChain Version()
@@ -58,7 +58,7 @@ namespace Arcbot.Units
         [Extract("OMG{face:Face}")]
         public void Punch(MessageChain chain, Face face)
         {
-            _logger.LogInformation(chain.Flatten());
+            _logger.LogInformation("{}", chain.Flatten());
         }
 
     }
