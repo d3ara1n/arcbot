@@ -7,3 +7,9 @@
 [submodule "submodules/duffet"]
 	path = submodules/duffet
 	url = git@github.com:ac682/duffet
+[submodule "submodules/choke"]
+	path = submodules/choke
+	url = git@github.com:d3ara1n/choke
+[submodule "submodules/Onebot.Net"]
+	path = submodules/Onebot.Net
+	url = git@github.com:theGravityLab/Onebot.Net
