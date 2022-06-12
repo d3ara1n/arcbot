@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +11,13 @@ public class SelfStore
 
     private List<Friend> cachedFriends = new();
 
-    public Group? FindGroup(long identity) =>
+    public Group FindGroup(long identity) =>
         cachedGroups.FirstOrDefault(x => x.Identity == identity);
 
-    public Member? FindMember(long groupId, long memberId) =>
+    public Member FindMember(long groupId, long memberId) =>
         FindGroup(groupId)?.Members?.Value?.FirstOrDefault(x => x.Identity == memberId);
 
-    public Friend? FindFriend(long identity) =>
+    public Friend FindFriend(long identity) =>
         cachedFriends.FirstOrDefault(x => x.Identity == identity);
 
     public void AddGroup(Group group) => 

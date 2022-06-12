@@ -9,9 +9,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Quartz;
-using Sora.Interfaces;
-using Sora.Net;
-using Sora.OnebotModel;
 
 Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(configure => configure
@@ -23,7 +20,7 @@ Host.CreateDefaultBuilder(args)
                 .SetMinimalLevel(LogLevel.Debug)
                 .AddFormatter<MessageElementFormatter>()
                 .AddBuiltinFormatters()))
-        .AddOnebot().Configure<OnebotClientOptions>(context.Configuration.GetSection("Onebot"))
+        .AddApiClient().Configure<ApiClientOptions>(context.Configuration.GetSection("Onebot"))
         .AddHyperaiX(configure => configure
             .UseEventBlocker()
             .UseLogging()
@@ -37,8 +34,7 @@ Host.CreateDefaultBuilder(args)
         }).Configure<QuartzOptions>(context.Configuration.GetSection("Quartz"))
         .AddQuartzHostedService()
         .Configure<QuartzHostedServiceOptions>(context.Configuration.GetSection("QuartzService"))
-        .AddSingleton<SelfStore>()
-        .AddSora(context.Configuration.GetSection("Sora")))
+        .AddSingleton<SelfStore>())
     .UseConsoleLifetime()
     .Build()
     .Run();
