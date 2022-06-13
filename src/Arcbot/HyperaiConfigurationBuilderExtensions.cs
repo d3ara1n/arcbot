@@ -31,6 +31,11 @@ namespace Arcbot
                         logger.LogInformation("G | Group={GName}({GId}) Member={MName}({MId})\n{Message}", it.Group.Name, it.Group.Identity, it.Sender.DisplayName, it.Sender.Identity, it.Message);
                         break;
                     }
+                    case UnknownEventArgs it:
+                    {
+                        logger.LogInformation("未知事件，通常是心跳，这一行仅供测试使用");
+                        break;
+                    }
                 }
                 nxt(evt, pvd);
             });

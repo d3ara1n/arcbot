@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arcbot", "src\Arcbot\Arcbot.csproj", "{B4385964-EF26-4239-A41C-AC8CA7222545}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "submodules", "submodules", "{96F4569B-BAC6-4EAC-81A1-06873D35892D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Duffet", "submodules\duffet\src\Duffet\Duffet.csproj", "{5A5A7AF8-D5AB-4CDD-A912-BC80D05FAE53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Onebot.Protocol", "submodules\Onebot.Net\src\Onebot.Protocol\Onebot.Protocol.csproj", "{362AD506-E758-4A2C-B2A5-D5E0638EF308}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hyperai", "Hyperai", "{E8C12FD4-23AE-4289-95E1-3137659CE55B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HyperaiX", "submodules\HyperaiX\src\HyperaiX\HyperaiX.csproj", "{641C844D-0D73-4DAF-B3BC-DF196E1B9CCD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HyperaiX.Abstractions", "submodules\HyperaiX\src\HyperaiX.Abstractions\HyperaiX.Abstractions.csproj", "{1F2E8155-53DF-4084-A425-FF9A92811710}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B4385964-EF26-4239-A41C-AC8CA7222545}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4385964-EF26-4239-A41C-AC8CA7222545}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4385964-EF26-4239-A41C-AC8CA7222545}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4385964-EF26-4239-A41C-AC8CA7222545}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A5A7AF8-D5AB-4CDD-A912-BC80D05FAE53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A5A7AF8-D5AB-4CDD-A912-BC80D05FAE53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A5A7AF8-D5AB-4CDD-A912-BC80D05FAE53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A5A7AF8-D5AB-4CDD-A912-BC80D05FAE53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{362AD506-E758-4A2C-B2A5-D5E0638EF308}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{362AD506-E758-4A2C-B2A5-D5E0638EF308}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{362AD506-E758-4A2C-B2A5-D5E0638EF308}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{362AD506-E758-4A2C-B2A5-D5E0638EF308}.Release|Any CPU.Build.0 = Release|Any CPU
+		{641C844D-0D73-4DAF-B3BC-DF196E1B9CCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{641C844D-0D73-4DAF-B3BC-DF196E1B9CCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{641C844D-0D73-4DAF-B3BC-DF196E1B9CCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{641C844D-0D73-4DAF-B3BC-DF196E1B9CCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F2E8155-53DF-4084-A425-FF9A92811710}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F2E8155-53DF-4084-A425-FF9A92811710}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F2E8155-53DF-4084-A425-FF9A92811710}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F2E8155-53DF-4084-A425-FF9A92811710}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5A5A7AF8-D5AB-4CDD-A912-BC80D05FAE53} = {96F4569B-BAC6-4EAC-81A1-06873D35892D}
+		{362AD506-E758-4A2C-B2A5-D5E0638EF308} = {96F4569B-BAC6-4EAC-81A1-06873D35892D}
+		{E8C12FD4-23AE-4289-95E1-3137659CE55B} = {96F4569B-BAC6-4EAC-81A1-06873D35892D}
+		{641C844D-0D73-4DAF-B3BC-DF196E1B9CCD} = {E8C12FD4-23AE-4289-95E1-3137659CE55B}
+		{1F2E8155-53DF-4084-A425-FF9A92811710} = {E8C12FD4-23AE-4289-95E1-3137659CE55B}
+	EndGlobalSection
+EndGlobal

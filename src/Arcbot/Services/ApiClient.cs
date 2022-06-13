@@ -9,30 +9,36 @@ using HyperaiX.Abstractions.Receipts;
 using HyperaiX.Abstractions.Relations;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Onebot.Protocol;
+using Onebot.Protocol.Models.Events.Meta;
 
 namespace Arcbot.Services
 {
     public class ApiClient : IApiClient
     {
-        readonly ILogger _logger;
+        private readonly ILogger _logger;
+        private readonly ApiClientOptions _options;
+        
         readonly OnebotClient client;
 
-        public ApiClient(ILogger<ApiClient> logger)
+        public ApiClient(ILogger<ApiClient> logger, IOptions<ApiClientOptions> options)
         {
             _logger = logger;
+            _options = options.Value;
 
-            client = new OnebotClient(ConnectionFactory.FromWebsocket());
+            client = new OnebotClient(ConnectionFactory.FromWebsocket(_options.Host, _options.Port, _options.AccessToken));
+            client.Connection.ConnectAsync();
         }
 
-        public GenericEventArgs Read()
+        public GenericEventArgs Read(CancellationToken token)
         {
-            
-            throw new NotImplementedException();
+            var result = client.Connection.FetchAsync(token).GetAwaiter().GetResult();
+            return result.ToHyperai();
         }
 
         public GenericReceipt Write(GenericActionArgs action)
         {
-            return new GenericReceipt();
+            throw new NotImplementedException();
         }
     }
 }
