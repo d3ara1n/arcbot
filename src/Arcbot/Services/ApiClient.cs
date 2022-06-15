@@ -27,7 +27,6 @@ namespace Arcbot.Services
             _options = options.Value;
 
             client = new OnebotClient(ConnectionFactory.FromWebsocket(_options.Host, _options.Port, _options.AccessToken));
-            client.Connection.ConnectAsync();
         }
 
         public GenericEventArgs Read(CancellationToken token)

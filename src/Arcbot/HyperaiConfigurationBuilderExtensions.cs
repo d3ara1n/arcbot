@@ -33,7 +33,7 @@ namespace Arcbot
                     }
                     case UnknownEventArgs it:
                     {
-                        logger.LogInformation("未知事件，通常是心跳，这一行仅供测试使用");
+                        logger.LogInformation("Event blocked, this line is unreachable");
                         break;
                     }
                 }

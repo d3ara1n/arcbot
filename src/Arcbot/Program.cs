@@ -21,6 +21,7 @@ Host.CreateDefaultBuilder(args)
                 .AddFormatter<MessageElementFormatter>()
                 .AddBuiltinFormatters()))
         .AddApiClient().Configure<ApiClientOptions>(context.Configuration.GetSection("Onebot"))
+        .AddHyper
         .AddHyperaiX(configure => configure
             .UseEventBlocker()
             .UseLogging()
