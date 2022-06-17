@@ -61,5 +61,12 @@ namespace Arcbot.Units
             _logger.LogInformation("{}", chain.Flatten());
         }
 
+        [Receiver(MessageEventType.Group)]
+        [Extract("*{at:At}*")]
+        public void Any(MessageChain chain)
+        {
+            _logger.LogInformation(chain.Flatten());
+        }
+
     }
 }
