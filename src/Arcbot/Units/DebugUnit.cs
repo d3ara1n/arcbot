@@ -1,9 +1,11 @@
 using System;
 using System.Buffers.Text;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using Arcbot.Jobs;
 using Arcbot.Services;
+using Duffet;
 using HyperaiX;
 using HyperaiX.Abstractions;
 using HyperaiX.Abstractions.Messages;
@@ -38,9 +40,15 @@ namespace Arcbot.Units
 
         [Receiver(MessageEventType.Group | MessageEventType.Friend)]
         [Extract("!version")]
-        public MessageChain Version()
+        public StringBuilder Version()
         {
-            return MessageChain.Construct(new Plain("IDK"));
+            var builder = new StringBuilder();
+            builder.AppendLine($"Runtime/{typeof(object).Assembly.GetName().Version}");
+            builder.AppendLine($"HyperaiX/{typeof(MessageChain).Assembly.GetName().Version}");
+            builder.AppendLine($"Duffet/{typeof(Bank).Assembly.GetName().Version}");
+            builder.AppendLine($"Onebot.Net/{typeof(OnebotClient).Assembly.GetName().Version}");
+            builder.Append($"Arcbot/{GetType().Assembly.GetName().Version}");
+            return builder;
         }
 
         [Receiver(MessageEventType.Group | MessageEventType.Friend)]
@@ -55,38 +63,6 @@ namespace Arcbot.Units
         public MessageChain Echo(MessageChain chain)
         {
             return chain;
-        }
-
-        [Receiver(MessageEventType.Group)]
-        [Extract("OMG{face:Face}")]
-        public void Punch(MessageChain chain, Face face)
-        {
-            _logger.LogInformation("{}", chain.Flatten());
-        }
-
-        [Receiver(MessageEventType.Group)]
-        public async Task Forward(MessageChain chain)
-        {
-            await Context.Client.SendGroupMessageAsync(594429092, chain);
-        }
-
-        [Receiver(MessageEventType.Group)]
-        [Extract("!plus")]
-        [Persistence(SharingScope.Member)]
-        public string PlusOne(Session session)
-        {
-            var count = session.Get<int>("count", () => 0);
-            count += 1;
-            if (count > 2)
-            {
-                session.Set("count", 0);
-            }
-            else
-            {
-                session.Set("count", count);
-            }
-
-            return count.ToString();
         }
     }
 }

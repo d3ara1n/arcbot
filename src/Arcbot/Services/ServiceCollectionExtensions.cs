@@ -9,6 +9,5 @@ namespace Arcbot.Services
 
         public static IServiceCollection AddApiClient(this IServiceCollection services) => services
             .AddSingleton<IApiClient, ApiClient>();
-
     }
 }
