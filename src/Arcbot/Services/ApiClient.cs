@@ -19,8 +19,7 @@ namespace Arcbot.Services
         private readonly ILogger _logger;
         private readonly ApiClientOptions _options;
         
-        readonly OnebotClient client;
-        private const int TIMEOUT = 1500;
+        internal readonly OnebotClient client;
 
         public ApiClient(ILogger<ApiClient> logger, IOptions<ApiClientOptions> options)
         {

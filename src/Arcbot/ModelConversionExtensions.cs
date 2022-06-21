@@ -40,17 +40,20 @@ public static class ModelConversionExtensions
             "mention" => new At(long.Parse(x.Data["user_id"])),
             "mention_all" => new AtAll(),
             "reply" => new Quote(x.Data["message_id"]),
-            "image" => new Image(new Uri($"https://gchat.qpic.cn/gchatpic_new/0/{x.Data["file_id"]}/0?term=3")),
+            "image" => new Image(new Uri(x.Data.ContainsKey("url")
+                ? x.Data["url"]
+                : $"https://gchat.qpic.cn/gchatpic_new/0/{x.Data["file_id"]}/0?term=3")),
             _ => new Plain($"[Onebot] Unsupported message element:{x.Type}")
         }));
 
-    public static Message ToOnebot(this MessageChain chain, OnebotClient client) => new Message(chain.Select(x => x switch
-    {
-        At it => MessageSegment.Mention(it.Identity.ToString()),
-        AtAll => MessageSegment.MentionAll(),
-        Quote it => MessageSegment.Reply(it.MessageId, null),
-        Image it => MessageSegment.Image(client.UploadFileAsync(it.Source.AbsoluteUri).Result.FileId),
-        Plain it => MessageSegment.Text(it.Text),
-        _ => MessageSegment.Text($"[HyperaiX] Unsupported message element: {x.TypeName}")
-    }).ToList());
+    public static Message ToOnebot(this MessageChain chain, OnebotClient client) => new Message(chain.Select(x =>
+        x switch
+        {
+            At it => MessageSegment.Mention(it.Identity.ToString()),
+            AtAll => MessageSegment.MentionAll(),
+            Quote it => MessageSegment.Reply(it.MessageId, null),
+            Image it => MessageSegment.Image(client.UploadFileAsync(it.Source.AbsoluteUri).Result.FileId),
+            Plain it => MessageSegment.Text(it.Text),
+            _ => MessageSegment.Text($"[HyperaiX] Unsupported message element: {x.TypeName}")
+        }).ToList());
 }

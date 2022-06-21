@@ -3,6 +3,8 @@ using System.Buffers.Text;
 using System.IO;
 using System.Threading.Tasks;
 using Arcbot.Jobs;
+using Arcbot.Services;
+using HyperaiX;
 using HyperaiX.Abstractions;
 using HyperaiX.Abstractions.Messages;
 using HyperaiX.Abstractions.Messages.ConcreteModels;
@@ -10,6 +12,7 @@ using HyperaiX.Abstractions.Relations;
 using HyperaiX.Units;
 using HyperaiX.Units.Attributes;
 using Microsoft.Extensions.Logging;
+using Onebot.Protocol;
 using Quartz;
 using Image = HyperaiX.Abstractions.Messages.ConcreteModels.Image;
 
@@ -62,10 +65,10 @@ namespace Arcbot.Units
         }
 
         [Receiver(MessageEventType.Group)]
-        [Extract("*{at:At}*")]
-        public void Any(MessageChain chain)
+        [Any]
+        public async Task Forward(MessageChain chain)
         {
-            _logger.LogInformation(chain.Flatten());
+            await Context.Client.SendGroupMessageAsync(594429092, chain);
         }
 
     }
