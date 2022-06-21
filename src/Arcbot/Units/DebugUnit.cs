@@ -65,11 +65,28 @@ namespace Arcbot.Units
         }
 
         [Receiver(MessageEventType.Group)]
-        [Any]
         public async Task Forward(MessageChain chain)
         {
             await Context.Client.SendGroupMessageAsync(594429092, chain);
         }
 
+        [Receiver(MessageEventType.Group)]
+        [Extract("!plus")]
+        [Persistence(SharingScope.Member)]
+        public string PlusOne(Session session)
+        {
+            var count = session.Get<int>("count", () => 0);
+            count += 1;
+            if (count > 2)
+            {
+                session.Set("count", 0);
+            }
+            else
+            {
+                session.Set("count", count);
+            }
+
+            return count.ToString();
+        }
     }
 }
