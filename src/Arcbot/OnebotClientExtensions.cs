@@ -30,7 +30,6 @@ public static class OnebotClientExtensions
                     Role = GroupRole.Member,
                 });
             }),
-            Owner = new Lazy<Member>(() => null)
         };
 
         return group;

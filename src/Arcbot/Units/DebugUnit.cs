@@ -64,5 +64,26 @@ namespace Arcbot.Units
         {
             return chain;
         }
+
+
+        [Receiver(MessageEventType.Group | MessageEventType.Friend)]
+        [Extract("!status")]
+        public async Task<StringBuilder> Status()
+        {
+            var builder = new StringBuilder();
+            var apiClient = Context.Client as ApiClient;
+            var client = apiClient.client;
+            var versionTask = client.GetVersionAsync();
+            var statusTask = client.GetStatusAsync();
+            var status = await statusTask;
+            var version = await versionTask;
+            builder.Append(status.Good ? "🟢 " : "🔴 ");
+            builder.AppendLine(status.Online ? "Online" : "Offline");
+            builder.AppendLine();
+            builder.AppendLine($"Impl: {version.Impl}(Onebot{version.OnebotVersion})");
+            builder.AppendLine($"Platform: {version.Platform}");
+            builder.AppendLine($"Version: {version.Version}");
+            return builder;
+        }
     }
 }

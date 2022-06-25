@@ -32,7 +32,15 @@ namespace Arcbot.Services
         public GenericEventArgs Read(CancellationToken token)
         {
             var result = client.Connection.FetchAsync(token).GetAwaiter().GetResult();
-            return result.ToHyperai(client);
+            try
+            {
+                return result.ToHyperai(client);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error occured while parsing event: {Event}", result);
+                throw;
+            }
         }
 
         public GenericReceipt Write(GenericActionArgs action)
