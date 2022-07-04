@@ -6,13 +6,15 @@ using Quartz;
 
 namespace Arcbot.Jobs;
 
-public class HelloJob: IJob
+public class HelloJob : IJob
 {
     private readonly IApiClient _client;
+
     public HelloJob(IApiClient client)
     {
         _client = client;
     }
+
     public Task Execute(IJobExecutionContext context)
     {
         var isGroup = (bool)context.MergedJobDataMap["IsGroup"];

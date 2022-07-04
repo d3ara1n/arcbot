@@ -1,55 +1,57 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using HyperaiX.Abstractions.Actions;
 using HyperaiX.Abstractions.Events;
 using HyperaiX.Abstractions.Messages;
 using HyperaiX.Abstractions.Messages.ConcreteModels;
-using HyperaiX.Abstractions.Receipts;
-using HyperaiX.Abstractions.Relations;
 using Onebot.Protocol;
-using Onebot.Protocol.Models.Actions;
 using Onebot.Protocol.Models.Events;
 using Onebot.Protocol.Models.Events.Message;
 using Onebot.Protocol.Models.Events.Meta;
 using Onebot.Protocol.Models.Messages;
-using Onebot.Protocol.Models.Receipts;
 
 namespace Arcbot;
 
 public static class ModelConversionExtensions
 {
-    public static GenericEventArgs ToHyperai(this EventBase evt, OnebotClient client) => evt switch
+    public static GenericEventArgs ToHyperai(this EventBase evt, OnebotClient client)
     {
-        UnknownEvent it => new UnknownEventArgs() { Data = it.RawObject },
-        HeartbeatEvent it => new UnknownEventArgs() { Data = it },
-        GroupMessageEvent it => new GroupMessageEventArgs()
+        return evt switch
         {
-            Group = client.GetHyperaiGroupAsync(long.Parse(it.GroupId)).Result,
-            Message = it.Message.ToHyperai(),
-            Sender = client.GetHyperaiMemberAsync(long.Parse(it.GroupId), long.Parse(it.UserId)).Result
-        },
+            UnknownEvent it => new UnknownEventArgs { Data = it.RawObject },
+            HeartbeatEvent it => new UnknownEventArgs { Data = it },
+            GroupMessageEvent it => new GroupMessageEventArgs
+            {
+                Group = client.GetHyperaiGroupAsync(long.Parse(it.GroupId)).Result,
+                Message = it.Message.ToHyperai(),
+                Sender = client.GetHyperaiMemberAsync(long.Parse(it.GroupId), long.Parse(it.UserId)).Result
+            },
 
-        _ => new UnknownEventArgs() { Data = evt },
-    };
+            _ => new UnknownEventArgs { Data = evt }
+        };
+    }
 
-    public static MessageChain ToHyperai(this Message message) => new(message.Select<MessageSegment, MessageElement>(
-        x => x.Type switch
-        {
-            "text" => new Plain(x.Data["text"].ToString()),
-            "mention" => new At(long.Parse(x.Data["user_id"].ToString()!)),
-            "mention_all" => new AtAll(),
-            "reply" => new Quote(x.Data["message_id"].ToString()),
-            "face" => new Face((int)(long)x.Data["id"]),
-            "image" => x.Data.ContainsKey("flash") && x.Data["flash"].Equals(true)
-                ? new Flash(new Uri($"id://{x.Data["file_id"]}"))
-                : new Image(new Uri($"id://{x.Data["file_id"]}")),
-            "voice" => new Audio(new Uri($"id://{x.Data["file_id"]}")),
-            _ => new Plain($"[Onebot] Unsupported message element:{x.Type}")
-        }));
+    public static MessageChain ToHyperai(this Message message)
+    {
+        return new MessageChain(message.Select<MessageSegment, MessageElement>(
+            x => x.Type switch
+            {
+                "text" => new Plain(x.Data["text"].ToString()),
+                "mention" => new At(long.Parse(x.Data["user_id"].ToString()!)),
+                "mention_all" => new AtAll(),
+                "reply" => new Quote(x.Data["message_id"].ToString()),
+                "face" => new Face((int)(long)x.Data["id"]),
+                "image" => x.Data.ContainsKey("flash") && x.Data["flash"].Equals(true)
+                    ? new Flash(new Uri($"id://{x.Data["file_id"]}"))
+                    : new Image(new Uri($"id://{x.Data["file_id"]}")),
+                "voice" => new Audio(new Uri($"id://{x.Data["file_id"]}")),
+                _ => new Plain($"[Onebot] Unsupported message element:{x.Type}")
+            }));
+    }
 
-    public static Message ToOnebot(this MessageChain chain, OnebotClient client) =>
-        new(chain.Select(x =>
+    public static Message ToOnebot(this MessageChain chain, OnebotClient client)
+    {
+        return new Message(chain.Select(x =>
             x switch
             {
                 At it => MessageSegment.Mention(it.Identity.ToString()),
@@ -77,4 +79,5 @@ public static class ModelConversionExtensions
                 Audio it => MessageSegment.Voice(it.Source.Host),
                 _ => MessageSegment.Text($"[HyperaiX] Unsupported message element: {x.TypeName}")
             }).ToList());
+    }
 }

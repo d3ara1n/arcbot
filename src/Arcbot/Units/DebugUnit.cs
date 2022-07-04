@@ -1,89 +1,88 @@
 using System;
-using System.Buffers.Text;
-using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Arcbot.Jobs;
+using Arcbot.Data;
 using Arcbot.Services;
 using Duffet;
-using HyperaiX;
 using HyperaiX.Abstractions;
 using HyperaiX.Abstractions.Messages;
 using HyperaiX.Abstractions.Messages.ConcreteModels;
-using HyperaiX.Abstractions.Relations;
 using HyperaiX.Units;
 using HyperaiX.Units.Attributes;
 using Microsoft.Extensions.Logging;
 using Onebot.Protocol;
 using Quartz;
-using Image = HyperaiX.Abstractions.Messages.ConcreteModels.Image;
 
-namespace Arcbot.Units
+namespace Arcbot.Units;
+
+public class DebugUnit : UnitBase
 {
-    public class DebugUnit : UnitBase
+    private readonly ILogger _logger;
+    private readonly ISchedulerFactory _schedulerFactory;
+
+    private readonly Random rand = new();
+
+    public DebugUnit(ISchedulerFactory schedulerFactory, ILogger<DebugUnit> logger)
     {
-        private readonly ISchedulerFactory _schedulerFactory;
-        private readonly ILogger _logger;
+        _schedulerFactory = schedulerFactory;
+        _logger = logger;
+    }
 
-        public DebugUnit(ISchedulerFactory schedulerFactory, ILogger<DebugUnit> logger)
-        {
-            _schedulerFactory = schedulerFactory;
-            _logger = logger;
-        }
+    [Receiver(MessageEventType.Group | MessageEventType.Friend)]
+    [Extract("!ping")]
+    public string Ping()
+    {
+        return "pong!";
+    }
 
-        [Receiver(MessageEventType.Group | MessageEventType.Friend)]
-        [Extract("!ping")]
-        public string Ping()
-        {
-            return "pong!";
-        }
+    [Receiver(MessageEventType.Group | MessageEventType.Friend)]
+    [Extract("!version")]
+    public StringBuilder Version()
+    {
+        var builder = new StringBuilder();
+        builder.AppendLine($"Runtime/{typeof(object).Assembly.GetName().Version}");
+        builder.AppendLine($"HyperaiX/{typeof(MessageChain).Assembly.GetName().Version}");
+        builder.AppendLine($"Duffet/{typeof(Bank).Assembly.GetName().Version}");
+        builder.AppendLine($"Onebot.Net/{typeof(OnebotClient).Assembly.GetName().Version}");
+        builder.Append($"Arcbot/{GetType().Assembly.GetName().Version}");
+        return builder;
+    }
 
-        [Receiver(MessageEventType.Group | MessageEventType.Friend)]
-        [Extract("!version")]
-        public StringBuilder Version()
-        {
-            var builder = new StringBuilder();
-            builder.AppendLine($"Runtime/{typeof(object).Assembly.GetName().Version}");
-            builder.AppendLine($"HyperaiX/{typeof(MessageChain).Assembly.GetName().Version}");
-            builder.AppendLine($"Duffet/{typeof(Bank).Assembly.GetName().Version}");
-            builder.AppendLine($"Onebot.Net/{typeof(OnebotClient).Assembly.GetName().Version}");
-            builder.Append($"Arcbot/{GetType().Assembly.GetName().Version}");
-            return builder;
-        }
-
-        [Receiver(MessageEventType.Group | MessageEventType.Friend)]
-        [Regex(@"^http[s]?:\/\/github.com\/(?<owner>[a-zA-Z0-9_]+)\/(?<repo>[a-zA-Z0-9_]+)$")]
-        public Image Github(string owner, string repo)
-        {
-            return new Image(new Uri($"https://opengraph.githubassets.com/0/{owner}/{repo}"));
-        }
-
-        [Receiver(MessageEventType.Group | MessageEventType.Friend)]
-        [Extract("!echo {chain}")]
-        public MessageChain Echo(MessageChain chain)
-        {
-            return chain;
-        }
+    [Receiver(MessageEventType.Group | MessageEventType.Friend)]
+    [Regex(@"^http[s]?:\/\/github.com\/(?<owner>[a-zA-Z0-9_]+)\/(?<repo>[a-zA-Z0-9_]+)$")]
+    public Image Github(string owner, string repo)
+    {
+        return new Image(new Uri($"https://opengraph.githubassets.com/0/{owner}/{repo}"));
+    }
 
 
-        [Receiver(MessageEventType.Group | MessageEventType.Friend)]
-        [Extract("!status")]
-        public async Task<StringBuilder> Status()
-        {
-            var builder = new StringBuilder();
-            var apiClient = Context.Client as ApiClient;
-            var client = apiClient.client;
-            var versionTask = client.GetVersionAsync();
-            var statusTask = client.GetStatusAsync();
-            var status = await statusTask;
-            var version = await versionTask;
-            builder.Append(status.Good ? "🟢 " : "🔴 ");
-            builder.AppendLine(status.Online ? "Online" : "Offline");
-            builder.AppendLine();
-            builder.AppendLine($"Impl: {version.Impl}(Onebot{version.OnebotVersion})");
-            builder.AppendLine($"Platform: {version.Platform}");
-            builder.AppendLine($"Version: {version.Version}");
-            return builder;
-        }
+    [Receiver(MessageEventType.Group | MessageEventType.Friend)]
+    [Extract("!status")]
+    public async Task<StringBuilder> Status()
+    {
+        var builder = new StringBuilder();
+        var apiClient = Context.Client as ApiClient;
+        var client = apiClient.client;
+        var versionTask = client.GetVersionAsync();
+        var statusTask = client.GetStatusAsync();
+        var status = await statusTask;
+        var version = await versionTask;
+        builder.Append(status.Good ? "🟢 " : "🔴 ");
+        builder.AppendLine(status.Online ? "Online" : "Offline");
+        builder.AppendLine();
+        builder.AppendLine($"Impl: {version.Impl}(Onebot{version.OnebotVersion})");
+        builder.AppendLine($"Platform: {version.Platform}");
+        builder.Append($"Version: {version.Version}");
+        var groups = await client.GetGroupListAsync();
+        return builder;
+    }
+
+    [Receiver(MessageEventType.Group)]
+    public void Repeat(MessageChain chain)
+    {
+        if (chain.All(x => x is Plain || x is Image))
+            if (rand.Next(100) == 0)
+                Context.SendMessageAsync(chain).Wait();
     }
 }

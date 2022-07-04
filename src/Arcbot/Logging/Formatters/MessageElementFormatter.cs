@@ -4,20 +4,22 @@ using HyperaiX.Abstractions.Messages;
 using HyperaiX.Abstractions.Messages.ConcreteModels;
 using Spectre.Console;
 
-namespace Arcbot.Logging.Formatters
-{
-    public class MessageElementFormatter: IObjectLoggingFormatter
-    {
-        public bool IsTypeAvailable(Type type) => type.IsAssignableTo(typeof(MessageElement));
+namespace Arcbot.Logging.Formatters;
 
-        public string Format(object obj, Type type, string format = null)
+public class MessageElementFormatter : IObjectLoggingFormatter
+{
+    public bool IsTypeAvailable(Type type)
+    {
+        return type.IsAssignableTo(typeof(MessageElement));
+    }
+
+    public string Format(object obj, Type type, string format = null)
+    {
+        var ele = (MessageElement)obj;
+        return ele switch
         {
-            var ele = (MessageElement)obj;
-            return ele switch
-            {
-                Plain it => $"[green]\"{Markup.Escape(it.Text)}\"[/]",
-                _ => Markup.Escape(ele.ToString())
-            };
-        }
+            Plain it => $"[green]\"{Markup.Escape(it.Text)}\"[/]",
+            _ => Markup.Escape(ele.ToString())
+        };
     }
 }

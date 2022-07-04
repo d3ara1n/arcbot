@@ -14,22 +14,22 @@ public static class OnebotClientExtensions
     {
         var groupName = (await client.GetGroupInfoAsync(id.ToString())).GroupName;
 
-        var group = new Group()
+        var group = new Group
         {
             Identity = id,
             Name = groupName,
             Members = new Lazy<IEnumerable<Member>>(() =>
             {
                 var list = client.GetGroupMemberListAsync(id.ToString()).Result;
-                return list.Select(x => new Member()
+                return list.Select(x => new Member
                 {
                     DisplayName = x.Nickname,
                     Nickname = x.Nickname,
                     GroupIdentity = id,
                     Identity = long.Parse(x.UserId),
-                    Role = GroupRole.Member,
+                    Role = GroupRole.Member
                 });
-            }),
+            })
         };
 
         return group;
@@ -39,24 +39,27 @@ public static class OnebotClientExtensions
     {
         var receipt = await client.GetGroupMemberInfoAsync(groupId.ToString(), memberId.ToString());
 
-        var member = new Member()
+        var member = new Member
         {
             Identity = long.Parse(receipt.UserId),
             DisplayName = receipt.Nickname,
             Nickname = receipt.Nickname,
             GroupIdentity = groupId,
-            Role = GroupRole.Member
+            Role = GroupRole.Member,
+            Title = null,
+            IsMuted = false
         };
 
         return member;
     }
 
-    public static async Task<string> SendHyperaiFriendMessageAsync(this OnebotClient client, long friendId, MessageChain chain)
+    public static async Task<string> SendHyperaiFriendMessageAsync(this OnebotClient client, long friendId,
+        MessageChain chain)
     {
         var receipt = await client.SendPrivateMessageAsync(friendId.ToString(), chain.ToOnebot(client));
 
         var messageId = receipt.MessageId;
-        
+
         return messageId;
     }
 
@@ -64,9 +67,9 @@ public static class OnebotClientExtensions
         MessageChain chain)
     {
         var receipt = await client.SendGroupMessageAsync(groupId.ToString(), chain.ToOnebot(client));
-        
+
         var messageId = receipt.MessageId;
-        
+
         return messageId;
     }
 }
