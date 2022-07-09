@@ -4,41 +4,56 @@ using System.Linq;
 using System.Threading.Tasks;
 using HyperaiX.Abstractions.Messages;
 using HyperaiX.Abstractions.Relations;
+using Microsoft.Extensions.Caching.Memory;
 using Onebot.Protocol;
+using Onebot.Protocol.Models.Receipts;
 
 namespace Arcbot;
 
 public static class OnebotClientExtensions
 {
-    public static async Task<Group> GetHyperaiGroupAsync(this OnebotClient client, long id)
-    {
-        var groupName = (await client.GetGroupInfoAsync(id.ToString())).GroupName;
+    private static readonly TimeSpan EXPIRATION = TimeSpan.FromMinutes(30);
 
-        var group = new Group
+    public static async Task<Group> GetHyperaiGroupAsync(this OnebotClient client, long id, IMemoryCache cache) =>
+        await cache.GetOrCreateAsync($"{id}:_", async entry =>
         {
-            Identity = id,
-            Name = groupName,
-            Members = new Lazy<IEnumerable<Member>>(() =>
+            entry.SlidingExpiration = EXPIRATION;
+
+            var groupName = (await client.GetGroupInfoAsync(id.ToString())).GroupName;
+
+            var group = new Group
             {
-                var list = client.GetGroupMemberListAsync(id.ToString()).Result;
-                return list.Select(x => new Member
-                {
-                    DisplayName = x.Nickname,
-                    Nickname = x.Nickname,
-                    GroupIdentity = id,
-                    Identity = long.Parse(x.UserId),
-                    Role = GroupRole.Member
-                });
-            })
-        };
+                Identity = id,
+                Name = groupName,
+                Members = new Lazy<IEnumerable<Member>>(() => client.GetHyperaiGroupMembersAsync(id, cache).Result)
+            };
 
-        return group;
-    }
+            return group;
+        });
 
-    public static async Task<Member> GetHyperaiMemberAsync(this OnebotClient client, long groupId, long memberId)
+    public static async Task<IEnumerable<Member>> GetHyperaiGroupMembersAsync(this OnebotClient client, long id,
+        IMemoryCache cache) =>
+        await cache.GetOrCreateAsync($"{id}:*", async entry =>
+        {
+            entry.SlidingExpiration = EXPIRATION;
+
+            var list = await client.GetGroupMemberListAsync(id.ToString());
+            return list.Select(x => new Member
+            {
+                DisplayName = x.Nickname,
+                Nickname = x.Nickname,
+                GroupIdentity = id,
+                Identity = long.Parse(x.UserId),
+                Role = GroupRole.Member
+            });
+        });
+
+    public static async Task<Member> GetHyperaiMemberAsync(this OnebotClient client, long groupId, long memberId,
+        IMemoryCache cache) => await cache.GetOrCreateAsync($"{groupId}:{memberId}", async entry =>
     {
-        var receipt = await client.GetGroupMemberInfoAsync(groupId.ToString(), memberId.ToString());
+        entry.SlidingExpiration = EXPIRATION;
 
+        var receipt = await client.GetGroupMemberInfoAsync(groupId.ToString(), memberId.ToString());
         var member = new Member
         {
             Identity = long.Parse(receipt.UserId),
@@ -51,7 +66,48 @@ public static class OnebotClientExtensions
         };
 
         return member;
-    }
+    });
+
+    public static async Task<Friend>
+        GetHyperaiFriendAsync(this OnebotClient client, long friendId, IMemoryCache cache) =>
+        await cache.GetOrCreateAsync($"_:{friendId}", async entry =>
+        {
+            entry.SlidingExpiration = EXPIRATION;
+
+            var receipt = await client.GetUserInfoAsync(friendId.ToString());
+            var friend = new Friend()
+            {
+                Identity = friendId,
+                Nickname = receipt.Nickname,
+                Remark = receipt.Nickname
+            };
+
+            return friend;
+        });
+
+    public static async Task<Self> GetHyperaiSelfAsync(this OnebotClient client, IMemoryCache cache) =>
+        await cache.GetOrCreateAsync($"_:_", async entry =>
+        {
+            entry.SlidingExpiration = EXPIRATION;
+
+            var tasks = (client.GetSelfInfoAsync(), client.GetGroupListAsync(), client.GetFriendListAsync());
+
+            var nickname = await tasks.Item1;
+            var groups = await tasks.Item2;
+            var friends = await tasks.Item3;
+
+            var self = new Self()
+            {
+                Identity = long.Parse(nickname.UserId),
+                Nickname = nickname.Nickname,
+                Groups = new Lazy<IEnumerable<Group>>(() =>
+                    groups.Select(x => client.GetHyperaiGroupAsync(long.Parse(x.GroupId), cache).Result)),
+                Friends = new Lazy<IEnumerable<Friend>>(() =>
+                    friends.Select(x => client.GetHyperaiFriendAsync(long.Parse(x.UserId), cache).Result))
+            };
+
+            return self;
+        });
 
     public static async Task<string> SendHyperaiFriendMessageAsync(this OnebotClient client, long friendId,
         MessageChain chain)

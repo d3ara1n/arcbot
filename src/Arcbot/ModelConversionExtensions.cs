@@ -4,6 +4,7 @@ using System.Linq;
 using HyperaiX.Abstractions.Events;
 using HyperaiX.Abstractions.Messages;
 using HyperaiX.Abstractions.Messages.ConcreteModels;
+using Microsoft.Extensions.Caching.Memory;
 using Onebot.Protocol;
 using Onebot.Protocol.Models.Events;
 using Onebot.Protocol.Models.Events.Message;
@@ -14,7 +15,7 @@ namespace Arcbot;
 
 public static class ModelConversionExtensions
 {
-    public static GenericEventArgs ToHyperai(this EventBase evt, OnebotClient client)
+    public static GenericEventArgs ToHyperai(this EventBase evt, OnebotClient client, IMemoryCache cache)
     {
         return evt switch
         {
@@ -22,11 +23,15 @@ public static class ModelConversionExtensions
             HeartbeatEvent it => new UnknownEventArgs { Data = it },
             GroupMessageEvent it => new GroupMessageEventArgs
             {
-                Group = client.GetHyperaiGroupAsync(long.Parse(it.GroupId)).Result,
+                Group = client.GetHyperaiGroupAsync(long.Parse(it.GroupId), cache).Result,
                 Message = it.Message.ToHyperai(),
-                Sender = client.GetHyperaiMemberAsync(long.Parse(it.GroupId), long.Parse(it.UserId)).Result
+                Sender = client.GetHyperaiMemberAsync(long.Parse(it.GroupId), long.Parse(it.UserId), cache).Result
             },
-
+            PrivateMessageEvent it => new FriendMessageEventArgs()
+            {
+                Message = it.Message.ToHyperai(),
+                Sender = client.GetHyperaiFriendAsync(long.Parse(it.UserId), cache).Result,
+            },
             _ => new UnknownEventArgs { Data = evt }
         };
     }

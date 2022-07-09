@@ -2,7 +2,6 @@ using Ac682.Extensions.Logging.Console;
 using Arcbot;
 using Arcbot.Data;
 using Arcbot.Logging.Formatters;
-using Arcbot.Services;
 using HyperaiX;
 using HyperaiX.Units;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +28,8 @@ Host.CreateDefaultBuilder(args)
             .UseEventBlocker()
             .UseLogging()
             .UseUnits())
-        .AddUnits(configure => configure.MapUnits())
+        .AddUnits(configure => configure.LookForUnits())
+        .AddModules(context.Configuration)
         .AddQuartz(q =>
         {
             q.UseMicrosoftDependencyInjectionJobFactory();
@@ -38,8 +38,7 @@ Host.CreateDefaultBuilder(args)
         }).Configure<QuartzOptions>(context.Configuration.GetSection("Quartz"))
         .AddQuartzHostedService()
         .Configure<QuartzHostedServiceOptions>(context.Configuration.GetSection("QuartzService"))
-        .AddSingleton<SelfStore>()
-        .AddSingleton<ClasstableService>()
+        .AddMemoryCache()
         .AddDbContext<ArcContext>(options => options.UseSqlite(context.Configuration.GetConnectionString("Arcbot"))
             .LogTo(
                 s => { })))

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using HyperaiX.Abstractions.Relations;
 
-namespace Arcbot.Services;
+namespace Arcbot.Modules.Arcbot.Services;
 
 public class SelfStore
 {

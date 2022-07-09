@@ -4,23 +4,27 @@ using HyperaiX;
 using HyperaiX.Abstractions.Actions;
 using HyperaiX.Abstractions.Events;
 using HyperaiX.Abstractions.Receipts;
+using HyperaiX.Abstractions.Relations;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Onebot.Protocol;
 
-namespace Arcbot.Services;
+namespace Arcbot;
 
 public class ApiClient : IApiClient
 {
     private readonly ILogger _logger;
     private readonly ApiClientOptions _options;
+    private readonly IMemoryCache _cache;
 
     internal readonly OnebotClient client;
 
-    public ApiClient(ILogger<ApiClient> logger, IOptions<ApiClientOptions> options)
+    public ApiClient(ILogger<ApiClient> logger, IOptions<ApiClientOptions> options, IMemoryCache cache)
     {
         _logger = logger;
         _options = options.Value;
+        _cache = cache;
 
         client = new OnebotClient(ConnectionFactory.FromWebsocket(_options.Host, _options.Port, _options.AccessToken));
     }
@@ -30,7 +34,7 @@ public class ApiClient : IApiClient
         var result = client.Connection.FetchAsync(token).GetAwaiter().GetResult();
         try
         {
-            return result.ToHyperai(client);
+            return result.ToHyperai(client, _cache);
         }
         catch (Exception e)
         {
@@ -39,14 +43,14 @@ public class ApiClient : IApiClient
         }
     }
 
-    public GenericReceipt Write(GenericActionArgs action)
+    public GenericReceipt Write(GenericActionArgs action) 
     {
         switch (action)
         {
             case QueryMemberActionArgs it:
             {
                 var member = client
-                    .GetHyperaiMemberAsync(it.GroupId, it.MemberId).Result;
+                    .GetHyperaiMemberAsync(it.GroupId, it.MemberId, _cache).Result;
                 return new QueryMemberReceipt
                 {
                     Member = member,
@@ -55,7 +59,7 @@ public class ApiClient : IApiClient
             }
             case QueryGroupActionArgs it:
             {
-                var group = client.GetHyperaiGroupAsync(it.GroupId).Result;
+                var group = client.GetHyperaiGroupAsync(it.GroupId, _cache).Result;
                 return new QueryGroupReceipt
                 {
                     Group = group,
@@ -80,6 +84,14 @@ public class ApiClient : IApiClient
                 {
                     MessageId = receipt?.MessageId,
                     Success = receipt != null
+                };
+            }
+            case QuerySelfActionArgs it:
+            {
+                var self = client.GetHyperaiSelfAsync(_cache).Result;
+                return new QuerySelfReceipt()
+                {
+                    Info = self
                 };
             }
             default:

@@ -1,4 +1,4 @@
-namespace Arcbot.Services;
+namespace Arcbot;
 
 public class ApiClientOptions
 {

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Arcbot.Data;
-using Arcbot.Services;
+using Arcbot;
 using Duffet;
 using HyperaiX.Abstractions;
 using HyperaiX.Abstractions.Messages;
@@ -21,7 +21,6 @@ public class DebugUnit : UnitBase
     private readonly ILogger _logger;
     private readonly ISchedulerFactory _schedulerFactory;
 
-    private readonly Random rand = new();
 
     public DebugUnit(ISchedulerFactory schedulerFactory, ILogger<DebugUnit> logger)
     {
@@ -48,13 +47,7 @@ public class DebugUnit : UnitBase
         builder.Append($"Arcbot/{GetType().Assembly.GetName().Version}");
         return builder;
     }
-
-    [Receiver(MessageEventType.Group | MessageEventType.Friend)]
-    [Regex(@"^http[s]?:\/\/github.com\/(?<owner>[a-zA-Z0-9_]+)\/(?<repo>[a-zA-Z0-9_]+)$")]
-    public Image Github(string owner, string repo)
-    {
-        return new Image(new Uri($"https://opengraph.githubassets.com/0/{owner}/{repo}"));
-    }
+    
 
 
     [Receiver(MessageEventType.Group | MessageEventType.Friend)]
@@ -78,11 +71,5 @@ public class DebugUnit : UnitBase
         return builder;
     }
 
-    [Receiver(MessageEventType.Group)]
-    public void Repeat(MessageChain chain)
-    {
-        if (chain.All(x => x is Plain || x is Image))
-            if (rand.Next(100) == 0)
-                Context.SendMessageAsync(chain).Wait();
-    }
+    
 }
