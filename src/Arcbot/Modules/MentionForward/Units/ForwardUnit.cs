@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Threading.Tasks;
 using Arcbot.Modules.MentionForward.Options;
 using HyperaiX;
 using HyperaiX.Abstractions;
@@ -14,8 +13,8 @@ namespace Arcbot.Modules.MentionForward.Units;
 
 public class ForwardUnit : UnitBase
 {
-    private readonly MentionForwardOptions _options;
     private readonly IApiClient _client;
+    private readonly MentionForwardOptions _options;
 
     public ForwardUnit(IOptions<MentionForwardOptions> options, IApiClient client)
     {

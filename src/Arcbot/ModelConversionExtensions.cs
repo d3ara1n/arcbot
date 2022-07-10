@@ -27,10 +27,10 @@ public static class ModelConversionExtensions
                 Message = it.Message.ToHyperai(),
                 Sender = client.GetHyperaiMemberAsync(long.Parse(it.GroupId), long.Parse(it.UserId), cache).Result
             },
-            PrivateMessageEvent it => new FriendMessageEventArgs()
+            PrivateMessageEvent it => new FriendMessageEventArgs
             {
                 Message = it.Message.ToHyperai(),
-                Sender = client.GetHyperaiFriendAsync(long.Parse(it.UserId), cache).Result,
+                Sender = client.GetHyperaiFriendAsync(long.Parse(it.UserId), cache).Result
             },
             _ => new UnknownEventArgs { Data = evt }
         };

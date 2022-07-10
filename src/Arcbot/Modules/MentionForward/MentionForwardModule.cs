@@ -4,8 +4,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Arcbot.Modules.MentionForward;
 
-public class MentionForwardModule: ModuleBase
+public class MentionForwardModule : ModuleBase
 {
-    public override IServiceCollection ConfigureServices(IServiceCollection services, IConfiguration configuration) =>
-        services.Configure<MentionForwardOptions>(configuration.GetSection("MentionForward"));
+    public override IServiceCollection ConfigureServices(IServiceCollection services, IConfiguration configuration)
+    {
+        return services.Configure<MentionForwardOptions>(configuration.GetSection("MentionForward"));
+    }
 }

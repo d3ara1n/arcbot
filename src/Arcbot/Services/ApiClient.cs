@@ -4,7 +4,6 @@ using HyperaiX;
 using HyperaiX.Abstractions.Actions;
 using HyperaiX.Abstractions.Events;
 using HyperaiX.Abstractions.Receipts;
-using HyperaiX.Abstractions.Relations;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -14,9 +13,9 @@ namespace Arcbot;
 
 public class ApiClient : IApiClient
 {
+    private readonly IMemoryCache _cache;
     private readonly ILogger _logger;
     private readonly ApiClientOptions _options;
-    private readonly IMemoryCache _cache;
 
     internal readonly OnebotClient client;
 
@@ -43,7 +42,7 @@ public class ApiClient : IApiClient
         }
     }
 
-    public GenericReceipt Write(GenericActionArgs action) 
+    public GenericReceipt Write(GenericActionArgs action)
     {
         switch (action)
         {
@@ -89,7 +88,7 @@ public class ApiClient : IApiClient
             case QuerySelfActionArgs it:
             {
                 var self = client.GetHyperaiSelfAsync(_cache).Result;
-                return new QuerySelfReceipt()
+                return new QuerySelfReceipt
                 {
                     Info = self
                 };

@@ -1,13 +1,8 @@
-using System;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Arcbot.Data;
-using Arcbot;
 using Duffet;
 using HyperaiX.Abstractions;
 using HyperaiX.Abstractions.Messages;
-using HyperaiX.Abstractions.Messages.ConcreteModels;
 using HyperaiX.Units;
 using HyperaiX.Units.Attributes;
 using Microsoft.Extensions.Logging;
@@ -47,7 +42,6 @@ public class DebugUnit : UnitBase
         builder.Append($"Arcbot/{GetType().Assembly.GetName().Version}");
         return builder;
     }
-    
 
 
     [Receiver(MessageEventType.Group | MessageEventType.Friend)]
@@ -70,6 +64,4 @@ public class DebugUnit : UnitBase
         var groups = await client.GetGroupListAsync();
         return builder;
     }
-
-    
 }

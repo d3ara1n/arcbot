@@ -9,10 +9,10 @@ using Microsoft.Extensions.Logging;
 
 namespace Arcbot.Units;
 
-public class MessageRecordUnit: UnitBase
+public class MessageRecordUnit : UnitBase
 {
-    private readonly ILogger _logger;
     private readonly ArcContext _context;
+    private readonly ILogger _logger;
 
     public MessageRecordUnit(ILogger<MessageRecordUnit> logger, ArcContext context)
     {
@@ -23,7 +23,7 @@ public class MessageRecordUnit: UnitBase
     [Receiver(MessageEventType.Group)]
     public void GroupRecord(MessageChain chain, Group group, Member member)
     {
-        var record = new MessageModel()
+        var record = new MessageModel
         {
             Sender = member.Identity,
             Group = group.Identity,
@@ -32,13 +32,12 @@ public class MessageRecordUnit: UnitBase
         };
 
         _context.Messages.Add(record);
-        _context.SaveChanges();
     }
 
     [Receiver(MessageEventType.Friend)]
     public void FriendRecord(MessageChain chain, Friend friend)
     {
-        var record = new MessageModel()
+        var record = new MessageModel
         {
             Sender = friend.Identity,
             Group = 0,
@@ -47,6 +46,5 @@ public class MessageRecordUnit: UnitBase
         };
 
         _context.Messages.Add(record);
-        _context.SaveChanges();
     }
 }

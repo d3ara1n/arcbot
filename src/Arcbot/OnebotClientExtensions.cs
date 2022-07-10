@@ -6,7 +6,6 @@ using HyperaiX.Abstractions.Messages;
 using HyperaiX.Abstractions.Relations;
 using Microsoft.Extensions.Caching.Memory;
 using Onebot.Protocol;
-using Onebot.Protocol.Models.Receipts;
 
 namespace Arcbot;
 
@@ -14,8 +13,9 @@ public static class OnebotClientExtensions
 {
     private static readonly TimeSpan EXPIRATION = TimeSpan.FromMinutes(30);
 
-    public static async Task<Group> GetHyperaiGroupAsync(this OnebotClient client, long id, IMemoryCache cache) =>
-        await cache.GetOrCreateAsync($"{id}:_", async entry =>
+    public static async Task<Group> GetHyperaiGroupAsync(this OnebotClient client, long id, IMemoryCache cache)
+    {
+        return await cache.GetOrCreateAsync($"{id}:_", async entry =>
         {
             entry.SlidingExpiration = EXPIRATION;
 
@@ -30,10 +30,12 @@ public static class OnebotClientExtensions
 
             return group;
         });
+    }
 
     public static async Task<IEnumerable<Member>> GetHyperaiGroupMembersAsync(this OnebotClient client, long id,
-        IMemoryCache cache) =>
-        await cache.GetOrCreateAsync($"{id}:*", async entry =>
+        IMemoryCache cache)
+    {
+        return await cache.GetOrCreateAsync($"{id}:*", async entry =>
         {
             entry.SlidingExpiration = EXPIRATION;
 
@@ -47,35 +49,40 @@ public static class OnebotClientExtensions
                 Role = GroupRole.Member
             });
         });
+    }
 
     public static async Task<Member> GetHyperaiMemberAsync(this OnebotClient client, long groupId, long memberId,
-        IMemoryCache cache) => await cache.GetOrCreateAsync($"{groupId}:{memberId}", async entry =>
+        IMemoryCache cache)
     {
-        entry.SlidingExpiration = EXPIRATION;
-
-        var receipt = await client.GetGroupMemberInfoAsync(groupId.ToString(), memberId.ToString());
-        var member = new Member
+        return await cache.GetOrCreateAsync($"{groupId}:{memberId}", async entry =>
         {
-            Identity = long.Parse(receipt.UserId),
-            DisplayName = receipt.Nickname,
-            Nickname = receipt.Nickname,
-            GroupIdentity = groupId,
-            Role = GroupRole.Member,
-            Title = null,
-            IsMuted = false
-        };
+            entry.SlidingExpiration = EXPIRATION;
 
-        return member;
-    });
+            var receipt = await client.GetGroupMemberInfoAsync(groupId.ToString(), memberId.ToString());
+            var member = new Member
+            {
+                Identity = long.Parse(receipt.UserId),
+                DisplayName = receipt.Nickname,
+                Nickname = receipt.Nickname,
+                GroupIdentity = groupId,
+                Role = GroupRole.Member,
+                Title = null,
+                IsMuted = false
+            };
+
+            return member;
+        });
+    }
 
     public static async Task<Friend>
-        GetHyperaiFriendAsync(this OnebotClient client, long friendId, IMemoryCache cache) =>
-        await cache.GetOrCreateAsync($"_:{friendId}", async entry =>
+        GetHyperaiFriendAsync(this OnebotClient client, long friendId, IMemoryCache cache)
+    {
+        return await cache.GetOrCreateAsync($"_:{friendId}", async entry =>
         {
             entry.SlidingExpiration = EXPIRATION;
 
             var receipt = await client.GetUserInfoAsync(friendId.ToString());
-            var friend = new Friend()
+            var friend = new Friend
             {
                 Identity = friendId,
                 Nickname = receipt.Nickname,
@@ -84,9 +91,11 @@ public static class OnebotClientExtensions
 
             return friend;
         });
+    }
 
-    public static async Task<Self> GetHyperaiSelfAsync(this OnebotClient client, IMemoryCache cache) =>
-        await cache.GetOrCreateAsync($"_:_", async entry =>
+    public static async Task<Self> GetHyperaiSelfAsync(this OnebotClient client, IMemoryCache cache)
+    {
+        return await cache.GetOrCreateAsync("_:_", async entry =>
         {
             entry.SlidingExpiration = EXPIRATION;
 
@@ -96,7 +105,7 @@ public static class OnebotClientExtensions
             var groups = await tasks.Item2;
             var friends = await tasks.Item3;
 
-            var self = new Self()
+            var self = new Self
             {
                 Identity = long.Parse(nickname.UserId),
                 Nickname = nickname.Nickname,
@@ -108,6 +117,7 @@ public static class OnebotClientExtensions
 
             return self;
         });
+    }
 
     public static async Task<string> SendHyperaiFriendMessageAsync(this OnebotClient client, long friendId,
         MessageChain chain)

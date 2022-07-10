@@ -1,13 +1,13 @@
-using Arcbot.Modules.Repeater.Options;
+using Arcbot.Modules.Mockingbird.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Arcbot.Modules.Repeater;
+namespace Arcbot.Modules.Mockingbird;
 
-public class RepeaterModule : ModuleBase
+public class MockingbirdModule : ModuleBase
 {
     public override IServiceCollection ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
-        return services.Configure<RepeaterOptions>(configuration.GetSection("Repeater"));
+        return services.Configure<MockingbirdOptions>(configuration.GetSection("Mockingbird"));
     }
 }
