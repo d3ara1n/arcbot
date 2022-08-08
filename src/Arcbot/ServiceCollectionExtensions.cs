@@ -13,7 +13,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApiClient(this IServiceCollection services)
     {
-        ModelFactory.RegisterEventModel<FriendPokeEvent>("notice.friend_poke");
+        ModelFactory.RegisterEventModel<FriendPokeEvent>("notice.friend_pock");
         ModelFactory.RegisterEventModel<GroupNameUpdateEvent>("notice.group_name_update");
         ModelFactory.RegisterEventModel<NewFriendEvent>("request.new_friend");
         ModelFactory.RegisterEventModel<JoinGroupEvent>("request.join_group");

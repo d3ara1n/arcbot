@@ -34,6 +34,16 @@ public static class HyperaiConfigurationBuilderExtensions
                         it.Group.Identity, it.Sender.DisplayName, it.Sender.Identity, it.Message);
                     break;
                 }
+                case GroupJoinRequestEventArgs it:
+                {
+                    logger.LogInformation("{User} requests joining {GroupName}({GroupId}): {Message}", it.UserId, it.Group.Name,it.Group.Identity, it.Message);
+                    break;
+                }
+                case FriendPokeEventArgs it:
+                {
+                    logger.LogInformation("{UserName}({UserId}) pokes you", it.Sender.Nickname, it.Sender.Identity);
+                    break;
+                }
                 case UnknownEventArgs it:
                 {
                     logger.LogInformation("Event blocked, this line is unreachable");

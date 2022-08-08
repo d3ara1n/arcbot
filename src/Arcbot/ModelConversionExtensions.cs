@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Arcbot.Models.Events;
 using HyperaiX.Abstractions.Events;
 using HyperaiX.Abstractions.Messages;
 using HyperaiX.Abstractions.Messages.ConcreteModels;
@@ -30,6 +31,17 @@ public static class ModelConversionExtensions
             PrivateMessageEvent it => new FriendMessageEventArgs
             {
                 Message = it.Message.ToHyperai(),
+                Sender = client.GetHyperaiFriendAsync(long.Parse(it.UserId), cache).Result
+            },
+            JoinGroupEvent it => new GroupJoinRequestEventArgs()
+            {
+                Group = client.GetHyperaiGroupAsync(long.Parse(it.GroupId), cache).Result,
+                UserId = long.Parse(it.UserId),
+                RequestId = it.RequestId,
+                Message = it.Message
+            },
+            FriendPokeEvent it => new FriendPokeEventArgs()
+            {
                 Sender = client.GetHyperaiFriendAsync(long.Parse(it.UserId), cache).Result
             },
             _ => new UnknownEventArgs { Data = evt }

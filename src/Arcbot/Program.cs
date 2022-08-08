@@ -15,6 +15,7 @@ Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(configure => configure
         .AddTomlFile("arc.is.bot.toml"))
     .ConfigureServices((context, services) => services
+        .Configure<ArcbotOptions>(context.Configuration.GetSection("Arcbot"))
         .AddLogging(builder => builder
             .ClearProviders()
             .AddConsole(configure => configure
@@ -22,7 +23,7 @@ Host.CreateDefaultBuilder(args)
                 .AddFormatter<MessageElementFormatter>()
                 .AddBuiltinFormatters())
             .AddFile("logs/arcbot-{Date}.log")
-            .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning))
+            .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.None))
         .AddApiClient().Configure<ApiClientOptions>(context.Configuration.GetSection("Onebot"))
         .AddHyperaiX(configure => configure
             .UseEventBlocker()

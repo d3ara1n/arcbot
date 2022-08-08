@@ -26,7 +26,7 @@ public class RepeaterUnit : UnitBase
     public void Repeat(MessageChain chain, Group group)
     {
         if (_options.Enabled && _options.ActivatedGroups != null && _options.ActivatedGroups.Contains(group.Identity) &&
-            chain.All(x => x is Plain || x is Image))
+            chain.All(x => x is Plain or Image))
             if (rand.Next(100) == 0)
                 Context.SendAsync(chain).Wait();
     }

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Arcbot.Data;
 using Arcbot.Modules.Mockingbird.Options;
 using HyperaiX.Abstractions;
@@ -8,6 +9,7 @@ using HyperaiX.Abstractions.Messages.ConcreteModels;
 using HyperaiX.Abstractions.Relations;
 using HyperaiX.Units;
 using HyperaiX.Units.Attributes;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Arcbot.Modules.Mockingbird.Units;
@@ -17,13 +19,15 @@ public class MockingbirdUnit : UnitBase
     private static readonly object locker = new();
     private readonly ArcContext _context;
     private readonly MockingbirdOptions _options;
+    private readonly ILogger _logger;
 
     private readonly Random rnd = new();
 
-    public MockingbirdUnit(ArcContext context, IOptions<MockingbirdOptions> options)
+    public MockingbirdUnit(ArcContext context, IOptions<MockingbirdOptions> options, ILogger<MockingbirdUnit> logger)
     {
         _context = context;
         _options = options.Value;
+        _logger = logger;
     }
 
     [Receiver(MessageEventType.Group)]
@@ -32,11 +36,13 @@ public class MockingbirdUnit : UnitBase
     {
         if (!(_options.Enabled && _options.ActivatedGroups.Contains(group.Identity))) return;
         if (chain.Any(x => x is not Plain)) return;
-        EnsureCreated(session);
         var message = chain.ToString();
-        var last = Peek(session);
-        if (last == message) return;
 
+        EnsureCreated(session);
+        if (message.Length < 3) return;
+        var last = Peek(session);
+        
+        if (last == message) return;
         var found = false;
         Enumerate(session, str =>
         {
@@ -44,6 +50,7 @@ public class MockingbirdUnit : UnitBase
             {
                 if (last == str)
                 {
+                    if (_context.Triggers.Any(x => x.Group == group.Identity && x.Keyword == message)) return true;
                     var model = new TriggerModel
                     {
                         Group = group.Identity,
@@ -52,6 +59,10 @@ public class MockingbirdUnit : UnitBase
                     };
 
                     _context.Triggers.Add(model);
+                    _context.SaveChanges();
+                    _logger.LogInformation(
+                        "Group {Group}({GroupId})captured trigger word \"{Keyword}\" for response \"{Response}\"",
+                        group.Name, group.Identity, last, message);
                     return true;
                 }
             }
@@ -62,18 +73,19 @@ public class MockingbirdUnit : UnitBase
 
             return false;
         });
+        
         Push(session, message);
     }
 
     [Receiver(MessageEventType.Group)]
-    public async void Trigger(MessageChain chain, Group group)
+    public void Trigger(MessageChain chain, Group group)
     {
         if (!(_options.Enabled && _options.ActivatedGroups.Contains(group.Identity))) return;
         if (chain.Any(x => x is not Plain)) return;
         var message = chain.ToString();
         lock (locker)
         {
-            var results = _context.Triggers.Where(x => x.Keyword == message).ToList();
+            var results = _context.Triggers.Where(x => x.Group == group.Identity && x.Keyword == message).ToList();
             if (results.Count > 0)
             {
                 var choice = rnd.Next(results.Count);
