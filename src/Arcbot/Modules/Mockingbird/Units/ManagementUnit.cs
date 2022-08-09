@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Arcbot.Data;
+using Arcbot.Modules.Arcbot.Options;
 using HyperaiX.Abstractions;
 using HyperaiX.Abstractions.Messages;
 using HyperaiX.Abstractions.Messages.ConcreteModels;
@@ -29,10 +29,7 @@ public class ManagementUnit : UnitBase
     {
         var triggers = _context.Triggers.Where(x => x.Group == group.Identity).ToList();
         var builder = new StringBuilder($"{group.Name}({group.Identity})\n");
-        foreach (var trigger in triggers)
-        {
-            builder.AppendLine($"[{trigger.Id}]{trigger.Keyword}=>{trigger.Response},");
-        }
+        foreach (var trigger in triggers) builder.AppendLine($"[{trigger.Id}]{trigger.Keyword}=>{trigger.Response},");
 
         Context.SendAsync(MessageChain.Construct(new Plain(builder.ToString().TrimEnd()))).Wait();
     }

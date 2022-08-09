@@ -1,4 +1,4 @@
-namespace Arcbot;
+namespace Arcbot.Modules.Arcbot.Options;
 
 public class ArcbotOptions
 {

@@ -15,7 +15,6 @@ Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(configure => configure
         .AddTomlFile("arc.is.bot.toml"))
     .ConfigureServices((context, services) => services
-        .Configure<ArcbotOptions>(context.Configuration.GetSection("Arcbot"))
         .AddLogging(builder => builder
             .ClearProviders()
             .AddConsole(configure => configure

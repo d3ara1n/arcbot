@@ -1,3 +1,4 @@
+using Arcbot.Modules.Arcbot.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -7,6 +8,7 @@ public class ArcbotModule : ModuleBase
 {
     public override IServiceCollection ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
-        return services;
+        return services
+            .Configure<ArcbotOptions>(configuration.GetSection("Arcbot"));
     }
 }

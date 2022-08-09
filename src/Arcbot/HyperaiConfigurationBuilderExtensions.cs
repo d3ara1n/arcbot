@@ -36,7 +36,8 @@ public static class HyperaiConfigurationBuilderExtensions
                 }
                 case GroupJoinRequestEventArgs it:
                 {
-                    logger.LogInformation("{User} requests joining {GroupName}({GroupId}): {Message}", it.UserId, it.Group.Name,it.Group.Identity, it.Message);
+                    logger.LogInformation("{User} requests joining {GroupName}({GroupId}): {Message}", it.UserId,
+                        it.Group.Name, it.Group.Identity, it.Message);
                     break;
                 }
                 case FriendPokeEventArgs it:

@@ -8,6 +8,6 @@ public record GetMessageAction : ActionBase
 {
     protected override string Action => "get_message";
     protected override Type Receipt => typeof(GetMessageReceipt);
-    
+
     public string MessageId { get; set; }
 }

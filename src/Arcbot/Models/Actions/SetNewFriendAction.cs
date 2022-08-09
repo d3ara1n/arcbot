@@ -8,7 +8,7 @@ public record SetNewFriendAction : ActionBase
 {
     protected override string Action => "set_new_friend";
     protected override Type Receipt => typeof(SetNewFriendReceipt);
-    
+
     public string UserId { get; set; }
     public long RequestId { get; set; }
     public bool Accept { get; set; }

@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Arcbot.Data;
 using Arcbot.Modules.Mockingbird.Options;
 using HyperaiX.Abstractions;
@@ -18,8 +17,8 @@ public class MockingbirdUnit : UnitBase
 {
     private static readonly object locker = new();
     private readonly ArcContext _context;
-    private readonly MockingbirdOptions _options;
     private readonly ILogger _logger;
+    private readonly MockingbirdOptions _options;
 
     private readonly Random rnd = new();
 
@@ -41,7 +40,7 @@ public class MockingbirdUnit : UnitBase
         EnsureCreated(session);
         if (message.Length < 3) return;
         var last = Peek(session);
-        
+
         if (last == message) return;
         var found = false;
         Enumerate(session, str =>
@@ -73,7 +72,7 @@ public class MockingbirdUnit : UnitBase
 
             return false;
         });
-        
+
         Push(session, message);
     }
 

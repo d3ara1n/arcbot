@@ -38,7 +38,7 @@ public class ForwardUnit : UnitBase
     public async void Forward(MessageChain chain, Friend friend)
     {
         await _client.SendFriendMessageAsync(_options.Destination,
-            MessageChain.Construct(new Plain($"Message from Group {friend.Nickname}({friend.Identity}): ")));
+            MessageChain.Construct(new Plain($"Message from Friend {friend.Nickname}({friend.Identity}): ")));
         await _client.SendFriendMessageAsync(_options.Destination, chain);
     }
 }
