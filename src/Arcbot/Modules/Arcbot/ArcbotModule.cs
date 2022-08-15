@@ -1,4 +1,4 @@
-using Arcbot.Modules.Arcbot.Options;
+using Arcbot.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

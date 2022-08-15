@@ -10,6 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Quartz;
+using Sentry;
+using Sentry.Extensions.Logging;
+using Sentry.Extensions.Logging.Extensions.DependencyInjection;
 
 Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(configure => configure
@@ -41,7 +44,8 @@ Host.CreateDefaultBuilder(args)
         .AddMemoryCache()
         .AddDbContext<ArcContext>(options => options.UseSqlite(context.Configuration.GetConnectionString("Arcbot"))
             .LogTo(
-                s => { })))
+                _ => { }))
+        .AddSentry<SentryLoggingOptions>())
     .UseConsoleLifetime()
     .Build()
     .Run();

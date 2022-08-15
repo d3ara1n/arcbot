@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Text;
 using Arcbot.Data;
-using Arcbot.Modules.Arcbot.Options;
+using Arcbot.Options;
 using HyperaiX.Abstractions;
 using HyperaiX.Abstractions.Messages;
 using HyperaiX.Abstractions.Messages.ConcreteModels;
