@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using HyperaiX.Abstractions.Messages;
 using HyperaiX.Abstractions.Relations;
 using Microsoft.Extensions.Caching.Memory;
-using Onebot.Protocol;
+using Onebot.Client;
 
 namespace Arcbot;
 

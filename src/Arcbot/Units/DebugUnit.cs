@@ -1,12 +1,13 @@
 using System.Text;
 using System.Threading.Tasks;
+using Arcbot.Services;
 using Duffet;
 using HyperaiX.Abstractions;
 using HyperaiX.Abstractions.Messages;
 using HyperaiX.Units;
 using HyperaiX.Units.Attributes;
 using Microsoft.Extensions.Logging;
-using Onebot.Protocol;
+using Onebot.Client;
 using Quartz;
 
 namespace Arcbot.Units;

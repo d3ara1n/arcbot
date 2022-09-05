@@ -7,9 +7,9 @@ using HyperaiX.Abstractions.Receipts;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Onebot.Protocol;
+using Onebot.Client;
 
-namespace Arcbot;
+namespace Arcbot.Services;
 
 public class ApiClient : IApiClient
 {

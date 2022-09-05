@@ -6,7 +6,7 @@ using HyperaiX.Abstractions.Events;
 using HyperaiX.Abstractions.Messages;
 using HyperaiX.Abstractions.Messages.ConcreteModels;
 using Microsoft.Extensions.Caching.Memory;
-using Onebot.Protocol;
+using Onebot.Client;
 using Onebot.Protocol.Models.Events;
 using Onebot.Protocol.Models.Events.Message;
 using Onebot.Protocol.Models.Events.Meta;

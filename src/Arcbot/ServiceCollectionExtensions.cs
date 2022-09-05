@@ -2,10 +2,11 @@ using System;
 using System.Linq;
 using System.Runtime.Loader;
 using Arcbot.Models.Events;
+using Arcbot.Services;
 using HyperaiX;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Onebot.Protocol.Models;
+using Onebot.Client;
 
 namespace Arcbot;
 
