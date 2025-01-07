@@ -1,0 +1,9 @@
+﻿<Solution>
+  <Folder Name="/HyperaiX/">
+    <Project Path="submodules\HyperaiX\src\HyperaiX.Abstractions\HyperaiX.Abstractions.csproj" Type="Classic C#" />
+    <Project Path="submodules\HyperaiX\src\HyperaiX.Clients.Lagrange\HyperaiX.Clients.Lagrange.csproj" Type="Classic C#" />
+    <Project Path="submodules\HyperaiX\src\HyperaiX.Extensions.QQ\HyperaiX.Extensions.QQ.csproj" Type="Classic C#" />
+    <Project Path="submodules\HyperaiX\src\HyperaiX\HyperaiX.csproj" Type="Classic C#" />
+  </Folder>
+  <Project Path="src\Arcbot\Arcbot.csproj" Type="Classic C#" />
+</Solution>
