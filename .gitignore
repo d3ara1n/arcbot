@@ -365,3 +365,5 @@ MigrationBackup/
 
 
 .idea
+
+appsettings.*.json

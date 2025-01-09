@@ -1,8 +1,7 @@
-﻿
-using HyperaiX.Abstractions.Units;
+﻿using HyperaiX.Abstractions.Units;
 using HyperaiX.Extensions.QQ.Roles;
 
-namespace Arcbot.Units;
+namespace Arcbot.Modules.Debugging.Units;
 
 public class DebugUnit : UnitBase
 {

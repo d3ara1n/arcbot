@@ -5,5 +5,9 @@
     <Project Path="submodules\HyperaiX\src\HyperaiX.Extensions.QQ\HyperaiX.Extensions.QQ.csproj" Type="Classic C#" />
     <Project Path="submodules\HyperaiX\src\HyperaiX\HyperaiX.csproj" Type="Classic C#" />
   </Folder>
+  <Folder Name="/Other/">
+    <File Path=".gitignore" />
+    <File Path="README.md" />
+  </Folder>
   <Project Path="src\Arcbot\Arcbot.csproj" Type="Classic C#" />
 </Solution>
