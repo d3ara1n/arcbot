@@ -11,12 +11,12 @@ namespace Arcbot.Clients;
 
 public class DummyClient : IEndClient
 {
-    private static readonly Friend MISIDE = new Friend(114514, "米塔");
+    private static readonly Friend MISIDE = new(114514, "米塔", null);
 
     private GenericEventArgs[] _events =
     [
         new MessageEventArgs(new Conversation(MISIDE), MISIDE,
-            new MessageEntity(new RichContent([new Text("这是第一条消息")]), new Dictionary<string, object>(),
+            new MessageEntity("没有预览", new RichContent([new Text("这是第一条消息")]), new Dictionary<string, object>(),
                 DateTimeOffset.UtcNow))
     ];
 
@@ -32,11 +32,11 @@ public class DummyClient : IEndClient
         return Task.CompletedTask;
     }
 
-    public GenericEventArgs Read(CancellationToken token)
+    public ValueTask<GenericEventArgs> ReadAsync(CancellationToken token)
     {
         if (_cursor < _events.Length)
         {
-            return _events[_cursor++];
+            return ValueTask.FromResult(_events[_cursor++]);
         }
 
         while (true)
@@ -44,11 +44,10 @@ public class DummyClient : IEndClient
             token.ThrowIfCancellationRequested();
             Thread.Sleep(1000);
         }
-        
     }
 
-    public GenericReceiptArgs Write(GenericActionArgs action, CancellationToken token)
+    public ValueTask<GenericReceiptArgs> WriteAsync(GenericActionArgs action, CancellationToken token)
     {
-        return new GenericReceiptArgs();
+        return ValueTask.FromResult(new GenericReceiptArgs());
     }
 }
