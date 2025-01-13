@@ -13,14 +13,14 @@ public class DummyClient : IEndClient
 {
     private static readonly Friend MISIDE = new(114514, "米塔", null);
 
-    private GenericEventArgs[] _events =
+    private readonly GenericEventArgs[] _events =
     [
         new MessageEventArgs(new Conversation(MISIDE), MISIDE,
             new MessageEntity("没有预览", new RichContent([new Text("这是第一条消息")]), new Dictionary<string, object>(),
                 DateTimeOffset.UtcNow))
     ];
 
-    private int _cursor = 0;
+    private int _cursor;
 
     public Task ConnectAsync(CancellationToken token)
     {
@@ -34,10 +34,7 @@ public class DummyClient : IEndClient
 
     public ValueTask<GenericEventArgs> ReadAsync(CancellationToken token)
     {
-        if (_cursor < _events.Length)
-        {
-            return ValueTask.FromResult(_events[_cursor++]);
-        }
+        if (_cursor < _events.Length) return ValueTask.FromResult(_events[_cursor++]);
 
         while (true)
         {

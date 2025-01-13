@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using HyperaiX.Abstractions.Modules;
-using HyperaiX.Modules;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

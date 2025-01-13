@@ -8,28 +8,28 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\submodules\HyperaiX\src\HyperaiX.Clients.Lagrange\HyperaiX.Clients.Lagrange.csproj" />
-      <ProjectReference Include="..\..\submodules\HyperaiX\src\HyperaiX.Extensions.QQ\HyperaiX.Extensions.QQ.csproj" />
-      <ProjectReference Include="..\..\submodules\HyperaiX\src\HyperaiX\HyperaiX.csproj" />
+        <ProjectReference Include="..\..\submodules\HyperaiX\src\HyperaiX.Clients.Lagrange\HyperaiX.Clients.Lagrange.csproj"/>
+        <ProjectReference Include="..\..\submodules\HyperaiX\src\HyperaiX.Extensions.QQ\HyperaiX.Extensions.QQ.csproj"/>
+        <ProjectReference Include="..\..\submodules\HyperaiX\src\HyperaiX\HyperaiX.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="appsettings.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="appsettings.Development.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
+        <None Update="appsettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="appsettings.Development.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Console\Formatters\" />
+        <Folder Include="Console\Formatters\"/>
     </ItemGroup>
 
 </Project>
