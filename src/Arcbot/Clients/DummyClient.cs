@@ -15,7 +15,7 @@ public class DummyClient : IEndClient
 
     private readonly GenericEventArgs[] _events =
     [
-        new MessageEventArgs(new Conversation(MISIDE), MISIDE,
+        new MessageEventArgs(new Conversation(MISIDE), MISIDE, MISIDE,
             new MessageEntity("没有预览", new RichContent([new Text("这是第一条消息")]), new Dictionary<string, object>(),
                 DateTimeOffset.UtcNow))
     ];

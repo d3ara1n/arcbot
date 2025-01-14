@@ -21,7 +21,7 @@ app.AddHyperaiX(configuration =>
         .UseLogging()
         .UseBlacklist()
         .UseBots()
-        .UseUnits();
+        .UseUnits(options => options.AddElementType(typeof(Program).Assembly));
 
     configuration
         .Mount<DebugModule>();
