@@ -6,17 +6,18 @@ using HyperaiX.Abstractions.Messages.Payloads;
 using HyperaiX.Abstractions.Messages.Payloads.Elements;
 using HyperaiX.Abstractions.Receipts;
 using HyperaiX.Extensions.QQ.Roles;
+using Microsoft.Extensions.Logging;
 
 namespace Arcbot.Clients;
 
-public class DummyClient : IEndClient
+public class DummyClient(ILogger<DummyClient> logger) : IEndClient
 {
     private static readonly Friend MISIDE = new(114514, "米塔", null);
 
     private readonly GenericEventArgs[] _events =
     [
         new MessageEventArgs(new Conversation(MISIDE), MISIDE, MISIDE,
-            new MessageEntity("没有预览", new RichContent([new Text("这是第一条消息")]), new Dictionary<string, object>(),
+            new MessageEntity("没有预览", new RichContent([new Text("!ping")]), new Dictionary<string, object>(),
                 DateTimeOffset.UtcNow))
     ];
 
@@ -34,7 +35,12 @@ public class DummyClient : IEndClient
 
     public ValueTask<GenericEventArgs> ReadAsync(CancellationToken token)
     {
-        if (_cursor < _events.Length) return ValueTask.FromResult(_events[_cursor++]);
+        if (_cursor < _events.Length)
+        {
+            var evt = _events[_cursor++];
+            logger.LogInformation("Inbound {}", evt);
+            return ValueTask.FromResult(evt);
+        }
 
         while (true)
         {
@@ -45,6 +51,7 @@ public class DummyClient : IEndClient
 
     public ValueTask<GenericReceiptArgs> WriteAsync(GenericActionArgs action, CancellationToken token)
     {
+        logger.LogInformation("Outbound {}", action);
         return ValueTask.FromResult(new GenericReceiptArgs());
     }
 }

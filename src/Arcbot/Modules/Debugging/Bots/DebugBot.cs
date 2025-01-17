@@ -8,7 +8,6 @@ public class DebugBot(ILogger<DebugBot> logger) : BotBase
 {
     public override Task OnEventAsync(GenericEventArgs args)
     {
-        logger.LogInformation("Bot Received {}", args.ToString());
         return Task.CompletedTask;
     }
 }

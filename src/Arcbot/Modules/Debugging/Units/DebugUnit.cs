@@ -22,11 +22,11 @@ public class DebugUnit : UnitBase
     }
 
     [Receive<Group>]
-    [Extract("!ping {at:At}")]
+    [Extract("!ping {at:At} ")]
     public MessageEntity Ping(At at)
     {
         return Context.Self is Member self && self.Id == at.MemberId && Context.Sender is Member sender
-            ? MessageEntity.Builder().RichContent().At(sender.Id).Text("pong!").Build()
+            ? MessageEntity.Builder().RichContent().At(sender.Id, sender.DisplayName).Text(" pong!").Build()
             : MessageEntity.CreateText("pong!");
     }
 }
