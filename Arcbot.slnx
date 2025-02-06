@@ -11,4 +11,5 @@
   </Folder>
   <Project Path="src\Arcbot\Arcbot.csproj" Type="Classic C#" />
   <Project Path="submodules\duffet\src\Duffet\Duffet.csproj" Type="Classic C#" />
+  <Project Path="submodules\Lagrange.Core\Lagrange.Core\Lagrange.Core.csproj" Type="Classic C#" />
 </Solution>

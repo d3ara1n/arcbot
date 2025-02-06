@@ -7,3 +7,6 @@
 [submodule "submodules/Onebot.Net"]
 	path = submodules/Onebot.Net
 	url = git@github.com:theGravityLab/Onebot.Net
+[submodule "submodules/Lagrange.Core"]
+	path = submodules/Lagrange.Core
+	url = git@github.com:LagrangeDev/Lagrange.Core.git

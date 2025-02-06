@@ -4,6 +4,7 @@ using Arcbot.Clients;
 using Arcbot.Console;
 using Arcbot.Console.Formatters;
 using Arcbot.Modules.Debugging;
+using Arcbot.Modules.Fun;
 using HyperaiX;
 using HyperaiX.Abstractions;
 using HyperaiX.Clients.Lagrange;
@@ -37,10 +38,11 @@ app.AddHyperaiX(configuration =>
         .UseErrorLogging()
         .UseBlacklist()
         .UseBots()
-        .UseUnits(options => options.AddElementType(typeof(Program).Assembly));
+        .UseUnits();
 
     configuration
-        .Mount<DebugModule>();
+        .Mount<DebugModule>()
+        .Mount<FunModule>();
 });
 app.Services.AddLagrangeClient();
 // app.Services.AddSingleton<IEndClient, DummyClient>();

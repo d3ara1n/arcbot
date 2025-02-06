@@ -12,7 +12,7 @@ namespace Arcbot.Console;
 public class FancyConsoleFormatter : ConsoleFormatter
 {
     private readonly FancyConsoleFormatterOptions _options;
-    private readonly List<IConsoleFormatter> _formatters = new();
+    private readonly List<IConsoleFormatter> _formatters = [];
 
     public FancyConsoleFormatter(IOptions<FancyConsoleFormatterOptions> options) : base(nameof(FancyConsoleFormatter))
     {
@@ -95,6 +95,19 @@ public class FancyConsoleFormatter : ConsoleFormatter
             else
             {
                 textWriter.WriteLine(logEntry.Formatter(logEntry.State, logEntry.Exception));
+            }
+
+            if (logEntry.Exception != null)
+            {
+                AnsiColorHelper.WriteColored(textWriter, logEntry.Exception.Message, ConsoleColor.Red);
+#if DEBUG
+                if (logEntry.Exception.StackTrace is not null)
+                {
+                    textWriter.WriteLine();
+                    AnsiColorHelper.WriteColored(textWriter, logEntry.Exception.StackTrace, ConsoleColor.Gray);
+                }
+#endif
+                textWriter.WriteLine();
             }
         }
         else
