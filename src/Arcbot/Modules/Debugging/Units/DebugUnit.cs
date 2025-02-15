@@ -29,4 +29,22 @@ public class DebugUnit : UnitBase
             ? MessageEntity.Builder().RichContent().At(sender.Id, sender.DisplayName).Text(" pong!").Build()
             : MessageEntity.CreateText("pong!");
     }
+
+    [Receive<Group>]
+    public MessageEntity? Echo()
+    {
+        const string start = "!echo ";
+        if (Context.Message.Body is RichContent { Elements: [Text text, ..] } content && text.Plain.StartsWith(start))
+        {
+            return Context.Message with
+            {
+                Body = content with
+                {
+                    Elements = content.Elements.Skip(1).Prepend(new Text(text.Plain[start.Length..])).ToList()
+                }
+            };
+        }
+
+        return null;
+    }
 }
