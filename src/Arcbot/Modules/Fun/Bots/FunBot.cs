@@ -7,6 +7,6 @@ public class FunBot: BotBase
 {
     public override Task OnEventAsync(GenericEventArgs args)
     {
-        throw new NotImplementedException();
+        return Task.CompletedTask;
     }
 }

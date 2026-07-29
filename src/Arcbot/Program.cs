@@ -8,6 +8,7 @@ using Arcbot.Modules.Fun;
 using HyperaiX;
 using HyperaiX.Abstractions;
 using HyperaiX.Clients.Lagrange;
+using Lagrange.Core.Common;
 using HyperaiX.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -28,7 +29,6 @@ app.Logging.ClearProviders().AddConsole(options => options.FormatterName = "Fanc
             options.Formatters.Add(type);
         }
     });
-app.Services.AddMemoryCache();
 
 #region HyperaiX Services
 
@@ -44,7 +44,11 @@ app.AddHyperaiX(configuration =>
         .Mount<DebugModule>()
         .Mount<FunModule>();
 });
-app.Services.AddLagrangeClient();
+app.Services.AddLagrangeClient(opts =>
+{
+    var protocol = app.Configuration["LagrangeClient:Protocol"];
+    if (Enum.TryParse(protocol, true, out Protocols p)) opts.Protocol = p;
+});
 // app.Services.AddSingleton<IEndClient, DummyClient>();
 
 #endregion
